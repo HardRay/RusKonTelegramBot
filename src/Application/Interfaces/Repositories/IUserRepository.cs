@@ -8,4 +8,9 @@ namespace Application.Interfaces.Repositories;
 /// </summary>
 public interface IUserRepository : IBaseRepository<User>
 {
+    /// <summary>
+    /// Обновление данных пользователя
+    /// </summary>
+    /// <param name="user">Данные пользователя</param>
+    Task UpdateAsync(User user);
 }

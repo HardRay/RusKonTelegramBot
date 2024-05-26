@@ -5,10 +5,15 @@ namespace Domain.Entities;
 /// <summary>
 /// Пользователь
 /// </summary>
-public sealed class User : BaseEntity
+public sealed class User(long telegramId) : BaseEntity
 {
     /// <summary>
-    /// Ид в Telegram
+    /// Идентификатор в Telegram
     /// </summary>
-    public long TelegramId { get; set; }
+    public long TelegramId { get; set; } = telegramId;
+
+    /// <summary>
+    /// Имя пользователя в Telegram
+    /// </summary>
+    public string? TelegramUserName { get; set; }
 }

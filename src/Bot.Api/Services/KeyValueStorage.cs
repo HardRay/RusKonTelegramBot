@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Bot.Api.Services;
 
-public class KeyValueStorage(IUserStateRepository repository) : IKeyValueStorage
+public sealed class KeyValueStorage(IUserStateRepository repository) : IKeyValueStorage
 {
     public async ValueTask<T?> Get<T>(long userId, string key, T? defaultValue)
     {

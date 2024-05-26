@@ -29,6 +29,18 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
         await _collection.UpdateOneAsync(predicate, updater);
     }
 
+    /// <summary>
+    /// Найти запись и обновить
+    /// </summary>
+    /// <param name="predicate">Условия выборки</param>
+    /// <param name="updater">Условия обновления</param>
+    protected async Task FindOneAndUpdateAsync(Expression<Func<TEntity, bool>> predicate, UpdateDefinition<TEntity> updater)
+    {
+        updater = updater.Set(x => x.ModifyDateTimeUtc, DateTime.UtcNow);
+
+        await _collection.FindOneAndUpdateAsync(predicate, updater);
+    }
+
     /// <inheritdoc/>
     public Task DeleteOneAsync(Expression<Func<TEntity, bool>> predicate)
         => _collection.DeleteOneAsync(predicate);

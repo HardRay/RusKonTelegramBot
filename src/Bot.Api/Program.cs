@@ -1,3 +1,4 @@
+using Bot.Api.Extensions;
 using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,19 +7,17 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddBot(builder.Configuration);
+
+builder.AddLogger();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseBot();
 
 app.UseHttpsRedirection();
 

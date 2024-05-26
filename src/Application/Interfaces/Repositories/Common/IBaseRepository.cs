@@ -16,7 +16,7 @@ public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     Task InsertOneAsync(TEntity entity);
 
     /// <summary>
-    /// Обновление записи
+    /// Обновление поля записи
     /// </summary>
     /// <typeparam name="TField">Тип поля для обновления</typeparam>
     /// <param name="predicate">Условия выборки</param>
