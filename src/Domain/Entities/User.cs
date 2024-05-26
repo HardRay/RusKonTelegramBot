@@ -10,5 +10,5 @@ public sealed class User : BaseEntity
     /// <summary>
     /// Ид в Telegram
     /// </summary>
-    public string TelegramId { get; set; } = null!;
+    public long TelegramId { get; set; }
 }

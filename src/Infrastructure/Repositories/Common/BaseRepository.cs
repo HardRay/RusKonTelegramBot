@@ -13,22 +13,24 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
     protected readonly IMongoCollection<TEntity> _collection = mongoCollectionProvider.GetCollection<TEntity>();
 
     /// <inheritdoc/>
-    public async Task CreateAsync(TEntity entity)
+    public async Task InsertOneAsync(TEntity entity)
     {
         entity.CreateDateTimeUtc = DateTime.UtcNow;
 
         await _collection.InsertOneAsync(entity);
     }
 
-    public async Task UpdateAsync(TEntity entity)
+    /// <inheritdoc/>
+    public async Task UpdateOneAsync<TField>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TField>> fieldPredicate, TField value)
     {
-        entity.ModifyDateTimeUtc = DateTime.UtcNow;
+        var updater = Builders<TEntity>.Update.Set(o => o.ModifyDateTimeUtc, DateTime.UtcNow);
+        updater.Set(fieldPredicate, value);
 
-        await _collection.ReplaceOneAsync(x=>x.Id == entity.Id, entity);
+        await _collection.UpdateOneAsync(predicate, updater);
     }
 
     /// <inheritdoc/>
-    public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+    public Task DeleteOneAsync(Expression<Func<TEntity, bool>> predicate)
         => _collection.DeleteOneAsync(predicate);
 
     /// <inheritdoc/>
@@ -45,5 +47,13 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
         var cursor = await _collection.FindAsync(predicate);
 
         return await cursor.ToListAsync();
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var cursor = await _collection.FindAsync(predicate);
+
+        return await cursor.AnyAsync();
     }
 }
