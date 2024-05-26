@@ -14,4 +14,14 @@ public sealed class AppOptions
     /// Ссылка на сайт компании
     /// </summary>
     public string CompanyWebsiteUrl { get; init; } = null!;
+
+    /// <summary>
+    /// Ссылка на канал в Telegram
+    /// </summary>
+    public string TelegramChannelUrl { get; init; } = null!;
+
+    /// <summary>
+    /// Ссылка на группу в VK
+    /// </summary>
+    public string VKGroupUrl { get; init; } = null!;
 }

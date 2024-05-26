@@ -33,9 +33,9 @@ public sealed class AboutCompanyController(IOptions<AppOptions> appOptions) : Bo
     }
 
     [Action]
-    public ValueTask ShowSocialMedia()
+    public async ValueTask ShowSocialMedia()
     {
-        return ValueTask.CompletedTask;
+        await GlobalState(new SocialMediaState());
     }
 
     [Action]

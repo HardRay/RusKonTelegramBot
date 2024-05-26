@@ -143,7 +143,16 @@
   <data name="SocialMediaButton" xml:space="preserve">
     <value>Наши социальные сети</value>
   </data>
+  <data name="SocialMediaText" xml:space="preserve">
+    <value>В наших социальных сетях можно следить за новостями и жизнью компании</value>
+  </data>
+  <data name="TelegramChannelButton" xml:space="preserve">
+    <value>Канал в Телеграм</value>
+  </data>
   <data name="VacanciesButton" xml:space="preserve">
     <value>Вакансии</value>
+  </data>
+  <data name="VKGroupButton" xml:space="preserve">
+    <value>Группа в ВК</value>
   </data>
 </root>

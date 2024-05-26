@@ -135,11 +135,38 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на В наших социальных сетях можно следить за новостями и жизнью компании.
+        /// </summary>
+        public static string SocialMediaText {
+            get {
+                return ResourceManager.GetString("SocialMediaText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Канал в Телеграм.
+        /// </summary>
+        public static string TelegramChannelButton {
+            get {
+                return ResourceManager.GetString("TelegramChannelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Вакансии.
         /// </summary>
         public static string VacanciesButton {
             get {
                 return ResourceManager.GetString("VacanciesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Группа в ВК.
+        /// </summary>
+        public static string VKGroupButton {
+            get {
+                return ResourceManager.GetString("VKGroupButton", resourceCulture);
             }
         }
     }
