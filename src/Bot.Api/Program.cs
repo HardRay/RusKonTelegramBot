@@ -1,13 +1,10 @@
 using Bot.Api.Extensions;
-using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddBot(builder.Configuration);
+builder.Services.AddAppServices(builder.Configuration);
 
 builder.AddLogger();
 

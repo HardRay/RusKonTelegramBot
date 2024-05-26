@@ -23,8 +23,9 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
     /// <inheritdoc/>
     public async Task UpdateOneAsync<TField>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TField>> fieldPredicate, TField value)
     {
-        var updater = Builders<TEntity>.Update.Set(o => o.ModifyDateTimeUtc, DateTime.UtcNow);
-        updater.Set(fieldPredicate, value);
+        var updater = Builders<TEntity>.Update
+            .Set(fieldPredicate, value)
+            .Set(o => o.ModifyDateTimeUtc, DateTime.UtcNow);
 
         await _collection.UpdateOneAsync(predicate, updater);
     }
