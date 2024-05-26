@@ -3,13 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot.Api", "src\Bot.Api\Bot.Api.csproj", "{878C7482-5B5C-4442-9F0C-7CF7B34C9224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.Api", "src\Bot.Api\Bot.Api.csproj", "{878C7482-5B5C-4442-9F0C-7CF7B34C9224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{2522D493-D9D4-4E50-A66D-A8BBE827B21D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{2522D493-D9D4-4E50-A66D-A8BBE827B21D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{297D18CE-7269-432F-BAE1-8FDA1458EE2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{297D18CE-7269-432F-BAE1-8FDA1458EE2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{30E9F6C4-7780-49C9-B199-78A1326A79B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{30E9F6C4-7780-49C9-B199-78A1326A79B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7F9B3F1-0F89-4E57-9176-14E1F65A0A04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{B0C2AE36-774D-41C2-8132-99AC5CAC4FC4}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{DE53C3FC-5F0C-414D-833E-AC2C3096CFC5}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +51,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{878C7482-5B5C-4442-9F0C-7CF7B34C9224} = {F7F9B3F1-0F89-4E57-9176-14E1F65A0A04}
+		{2522D493-D9D4-4E50-A66D-A8BBE827B21D} = {F7F9B3F1-0F89-4E57-9176-14E1F65A0A04}
+		{297D18CE-7269-432F-BAE1-8FDA1458EE2F} = {F7F9B3F1-0F89-4E57-9176-14E1F65A0A04}
+		{30E9F6C4-7780-49C9-B199-78A1326A79B3} = {F7F9B3F1-0F89-4E57-9176-14E1F65A0A04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEF01E10-1A1D-4FB3-84E9-65BD242D645F}
