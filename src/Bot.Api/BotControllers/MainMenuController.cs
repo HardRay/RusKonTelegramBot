@@ -1,24 +1,25 @@
 ﻿using Bot.Api.Resources;
+using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 
 namespace Bot.Api.BotControllers;
 
 public sealed record MainMenuState;
 
-public sealed class MainMenuController : BotControllerState<MainMenuState>
+public sealed class MainMenuController(ITelegramMessageService messageService) : BotControllerState<MainMenuState>
 {
     public override async ValueTask OnEnter()
     {
         await ShowMainMenu();
     }
 
-    public override ValueTask OnLeave()
+    public override async ValueTask OnLeave()
     {
-        return ValueTask.CompletedTask;
+        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
     }
 
     [Action]
-    public ValueTask ShowMainMenu()
+    public async ValueTask ShowMainMenu()
     {
         PushL(SharedResource.MainMenuGreetings);
 
@@ -26,7 +27,9 @@ public sealed class MainMenuController : BotControllerState<MainMenuState>
         RowButton(SharedResource.VacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.ContactWithHRButton, Q(ContactWithHR));
 
-        return ValueTask.CompletedTask;
+        var message = await Send();
+
+        await messageService.InsertAsync(message);
     }
 
     [Action]
@@ -49,9 +52,10 @@ public sealed class MainMenuController : BotControllerState<MainMenuState>
 
     [Action("Start")]
     [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
     public async ValueTask Start()
     {
+        await messageService.InsertAsync(Context.Update.Message);
+
         await ShowMainMenu();
     }
 }

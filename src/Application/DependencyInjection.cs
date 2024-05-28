@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(MapperProfiles));
 
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IMessageService, MessageService>();
 
         return services;
     }

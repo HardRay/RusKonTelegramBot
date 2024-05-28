@@ -25,10 +25,16 @@ public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     Task UpdateOneAsync<TField>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TField>> fieldPredicate, TField value);
 
     /// <summary>
-    /// Удаление записи
+    /// Удаление одной записи
     /// </summary>
     /// <param name="predicate">Условие выборки</param>
     Task DeleteOneAsync(Expression<Func<TEntity, bool>> predicate);
+
+    /// <summary>
+    /// Удаление множества записей
+    /// </summary>
+    /// <param name="predicate">Условие выборки</param>
+    Task DeleteManyAsync(Expression<Func<TEntity, bool>> predicate);
 
     /// <summary>
     /// Поиск первой записи, удовлетворяющей условиям.

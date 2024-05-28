@@ -1,11 +1,15 @@
 ﻿using Application.Interfaces.Services;
+using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 
 namespace Bot.Api.BotControllers;
 
 public sealed record StartState;
 
-public sealed class StartController(IUserService userService, ILogger<StartController> logger) : BotController
+public sealed class StartController(
+    IUserService userService,
+    ITelegramMessageService messageService,
+    ILogger<StartController> logger) : BotController
 {
     [Action("Start")]
     [Action("/start", "Запуск бота")]
@@ -15,21 +19,28 @@ public sealed class StartController(IUserService userService, ILogger<StartContr
         if (!userTelegramId.HasValue)
             return;
 
+        await messageService.InsertAsync(Context.Update.Message);
+
         var user = await userService.GetOrCreateUserByTelegramIdAsync(userTelegramId.Value);
 
         user.TelegramUserName = Context.GetUsername();
         await userService.UpdateUserAsync(user);
+
+        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
 
         await GlobalState(new MainMenuState());
     }
 
     [On(Handle.Unknown)]
     [Filter(Filters.NotGlobalState)]
-    public ValueTask Unknown()
+    public async ValueTask Unknown()
     {
-        PushL($"Неизвестная команда. Попробуйте начать с команды /start");
+        await messageService.InsertAsync(Context.Update.Message);
 
-        return ValueTask.CompletedTask;
+        PushL($"Неизвестная команда. Попробуйте начать с команды /start");
+        var message = await Send();
+
+        await messageService.InsertAsync(message);
     }
 
     [On(Handle.Exception)]

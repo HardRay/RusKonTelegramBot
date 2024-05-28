@@ -47,6 +47,10 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
         => _collection.DeleteOneAsync(predicate);
 
     /// <inheritdoc/>
+    public Task DeleteManyAsync(Expression<Func<TEntity, bool>> predicate)
+        => _collection.DeleteManyAsync(predicate);
+
+    /// <inheritdoc/>
     public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> predicate)
     {
         var cursor = await _collection.FindAsync(predicate);

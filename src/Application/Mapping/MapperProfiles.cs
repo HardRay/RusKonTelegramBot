@@ -10,5 +10,8 @@ public sealed class MapperProfiles : Profile
     {
         CreateMap<User, UserModel>()
             .ReverseMap();
+
+        CreateMap<Message, MessageModel>()
+            .ReverseMap();
     }
 }

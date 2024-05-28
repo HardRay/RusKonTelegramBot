@@ -1,4 +1,6 @@
 ﻿using Bot.Api.Options;
+using Bot.Api.Services;
+using Bot.Api.Services.Interfaces;
 using Infrastructure;
 
 namespace Bot.Api.Extensions;
@@ -12,6 +14,8 @@ public static class AppExtensions
         services.AddBot(configuration);
 
         services.Configure<AppOptions>(configuration.GetSection(nameof(AppOptions)));
+
+        services.AddTransient<ITelegramMessageService, TelegramMessageService>();
 
         return services;
     }
