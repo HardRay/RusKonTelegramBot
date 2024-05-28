@@ -1,6 +1,5 @@
 ﻿using Bot.Api.Services;
 using Deployf.Botf;
-using Infrastructure.Models.Options;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Bot.Api.Extensions;
@@ -9,14 +8,17 @@ public static class BotExtensions
 {
     public static IServiceCollection AddBot(this IServiceCollection services, IConfiguration configuration)
     {
-        var botOptions = configuration.GetSection(nameof(BotOptions)).Get<BotOptions>()
-            ?? throw new BotfException("Not found BotOptions");
+        var botApiToken = Environment.GetEnvironmentVariable("BotApiToken");
+        var botUserName = Environment.GetEnvironmentVariable("BotUserName");
+
+        if (string.IsNullOrEmpty(botUserName) || string.IsNullOrEmpty(botApiToken))
+            throw new BotfException("Not found bot options");
 
         services.AddBotf(new BotfOptions()
         {
             AutoCleanReplyKeyboard = true,
-            Username = botOptions.Username,
-            Token = botOptions.ApiToken,
+            Username = botUserName,
+            Token = botApiToken,
         });
 
         services.AddTransient<IKeyValueStorage, KeyValueStorage>();

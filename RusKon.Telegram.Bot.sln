@@ -17,13 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{B0C2AE
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
 		global.json = global.json
 		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{DE53C3FC-5F0C-414D-833E-AC2C3096CFC5}"
-	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Global

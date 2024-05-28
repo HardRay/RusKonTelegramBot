@@ -7,7 +7,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Bot.Api.csproj", "src/Bot.Api/"]
+COPY ["./src/Bot.Api/Bot.Api.csproj", "src/Bot.Api/"]
+COPY ["./src/Domain/Domain.csproj", "src/Domain/"]
+COPY ["./src/Application/Application.csproj", "src/Application/"]
+COPY ["./src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
 RUN dotnet restore "src/Bot.Api/Bot.Api.csproj"
 WORKDIR "src/Bot.Api"
 COPY . .
