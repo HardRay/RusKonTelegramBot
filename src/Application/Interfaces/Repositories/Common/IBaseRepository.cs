@@ -16,6 +16,12 @@ public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     Task InsertOneAsync(TEntity entity);
 
     /// <summary>
+    /// Вставка множества записей
+    /// </summary>
+    /// <param name="entities">Список данных</param>
+    Task InsertManyAsync(IEnumerable<TEntity> entities);
+
+    /// <summary>
     /// Обновление поля записи
     /// </summary>
     /// <typeparam name="TField">Тип поля для обновления</typeparam>

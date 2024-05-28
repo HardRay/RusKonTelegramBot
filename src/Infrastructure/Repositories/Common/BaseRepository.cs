@@ -21,6 +21,17 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
     }
 
     /// <inheritdoc/>
+    public async Task InsertManyAsync(IEnumerable<TEntity> entities)
+    {
+        var now = DateTime.UtcNow;
+
+        foreach (var entity in entities)
+            entity.CreateDateTimeUtc = now;
+
+        await _collection.InsertManyAsync(entities);
+    }
+
+    /// <inheritdoc/>
     public async Task UpdateOneAsync<TField>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TField>> fieldPredicate, TField value)
     {
         var updater = Builders<TEntity>.Update

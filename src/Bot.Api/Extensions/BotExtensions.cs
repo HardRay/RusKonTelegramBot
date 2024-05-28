@@ -8,8 +8,8 @@ public static class BotExtensions
 {
     public static IServiceCollection AddBot(this IServiceCollection services, IConfiguration configuration)
     {
-        var botApiToken = Environment.GetEnvironmentVariable("BotApiToken");
-        var botUserName = Environment.GetEnvironmentVariable("BotUserName");
+        var botApiToken = "6843598798:AAFHQiOLWnGS2uLBEnC16_eTxPXToybbcjg";
+        var botUserName = "https://t.me/ruskon_s_bot";
 
         if (string.IsNullOrEmpty(botUserName) || string.IsNullOrEmpty(botApiToken))
             throw new BotfException("Not found bot options");

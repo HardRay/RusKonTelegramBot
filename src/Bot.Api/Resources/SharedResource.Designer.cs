@@ -144,6 +144,15 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка загрузки вакансий.
+        /// </summary>
+        public static string ErrorDocumentUploading {
+            get {
+                return ResourceManager.GetString("ErrorDocumentUploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Чат.
         /// </summary>
         public static string HRChatButton {
@@ -158,6 +167,15 @@ namespace Bot.Api.Resources {
         public static string HRContactsText {
             get {
                 return ResourceManager.GetString("HRContactsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Неверное расширение файла. Должен быть xlsx или xls.
+        /// </summary>
+        public static string InvalidDocumentExtentions {
+            get {
+                return ResourceManager.GetString("InvalidDocumentExtentions", resourceCulture);
             }
         }
         
@@ -187,6 +205,15 @@ namespace Bot.Api.Resources {
         public static string SocialMediaText {
             get {
                 return ResourceManager.GetString("SocialMediaText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Загрузка вакансий из файла прошла успешно!.
+        /// </summary>
+        public static string SuccessDocumentUploading {
+            get {
+                return ResourceManager.GetString("SuccessDocumentUploading", resourceCulture);
             }
         }
         

@@ -146,11 +146,17 @@
   <data name="ContactWithHRButton" xml:space="preserve">
     <value>Связь с отделом кадров</value>
   </data>
+  <data name="ErrorDocumentUploading" xml:space="preserve">
+    <value>Ошибка загрузки вакансий</value>
+  </data>
   <data name="HRChatButton" xml:space="preserve">
     <value>Чат</value>
   </data>
   <data name="HRContactsText" xml:space="preserve">
     <value>Ты можешь связаться с нашим отделом кадров, позвонив по номеру телефона или написав в чат в Телеграм</value>
+  </data>
+  <data name="InvalidDocumentExtentions" xml:space="preserve">
+    <value>Неверное расширение файла. Должен быть xlsx или xls</value>
   </data>
   <data name="MainMenuGreetings" xml:space="preserve">
     <value>Привет, я бот для поиска работы в группе компаний «РусКон», я могу рассказать тебе о компании и её направлениях, показать актуальные вакансии и помочь связаться с нашим отделом кадров.
@@ -162,6 +168,9 @@
   </data>
   <data name="SocialMediaText" xml:space="preserve">
     <value>В наших социальных сетях можно следить за новостями и жизнью компании</value>
+  </data>
+  <data name="SuccessDocumentUploading" xml:space="preserve">
+    <value>Загрузка вакансий из файла прошла успешно!</value>
   </data>
   <data name="TelegramChannelButton" xml:space="preserve">
     <value>Канал в Телеграм</value>
