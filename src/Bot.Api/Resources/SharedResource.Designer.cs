@@ -79,11 +79,40 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Панель администратора.
+        /// </summary>
+        public static string AdminPanelButton {
+            get {
+                return ResourceManager.GetString("AdminPanelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Панель администратора
+        ///
+        ///Здесь вы можете обновить информацию о вакансиях. Для этого отправьте мне Excel-файл с вакансиями.
+        /// </summary>
+        public static string AdminPanelText {
+            get {
+                return ResourceManager.GetString("AdminPanelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Вернуться в стартовое меню.
         /// </summary>
         public static string BackToMainMenuButton {
             get {
                 return ResourceManager.GetString("BackToMainMenuButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Звонок.
+        /// </summary>
+        public static string CallButton {
+            get {
+                return ResourceManager.GetString("CallButton", resourceCulture);
             }
         }
         
@@ -111,6 +140,24 @@ namespace Bot.Api.Resources {
         public static string ContactWithHRButton {
             get {
                 return ResourceManager.GetString("ContactWithHRButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Чат.
+        /// </summary>
+        public static string HRChatButton {
+            get {
+                return ResourceManager.GetString("HRChatButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ты можешь связаться с нашим отделом кадров, позвонив по номеру телефона или написав в чат в Телеграм.
+        /// </summary>
+        public static string HRContactsText {
+            get {
+                return ResourceManager.GetString("HRContactsText", resourceCulture);
             }
         }
         

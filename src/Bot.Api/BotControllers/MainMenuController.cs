@@ -26,6 +26,7 @@ public sealed class MainMenuController(ITelegramMessageService messageService) :
         RowButton(SharedResource.AboutCompanyButton, Q(ShowAboutCompany));
         RowButton(SharedResource.VacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.ContactWithHRButton, Q(ContactWithHR));
+        RowButton(SharedResource.AdminPanelButton, Q(ShowAdminPanel));
 
         var message = await Send();
 
@@ -45,14 +46,21 @@ public sealed class MainMenuController(ITelegramMessageService messageService) :
     }
 
     [Action]
-    public ValueTask ContactWithHR()
+    public async ValueTask ContactWithHR()
     {
-        return ValueTask.CompletedTask;
+        await GlobalState(new HRState());
+    }
+
+    [Action]
+    public async ValueTask ShowAdminPanel()
+    {
+        await GlobalState(new AdminPanelState());
     }
 
     [Action("Start")]
     [Action("/start", "Показать меню")]
-    public async ValueTask Start()
+    [Filter(Filters.CurrentGlobalState)]
+    public async Task Start()
     {
         await messageService.InsertAsync(Context.Update.Message);
 

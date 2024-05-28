@@ -41,4 +41,14 @@ public sealed class SocialMediaController(
     {
         await GlobalState(new MainMenuState());
     }
+
+    [Action("Start")]
+    [Action("/start", "Показать меню")]
+    [Filter(Filters.CurrentGlobalState)]
+    public async Task Start()
+    {
+        await messageService.InsertAsync(Context.Update.Message);
+
+        await GlobalState(new MainMenuState());
+    }
 }

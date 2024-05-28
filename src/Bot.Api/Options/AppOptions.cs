@@ -24,4 +24,14 @@ public sealed class AppOptions
     /// Ссылка на группу в VK
     /// </summary>
     public string VKGroupUrl { get; init; } = null!;
+
+    /// <summary>
+    /// Группа HR-специалистов
+    /// </summary>
+    public string TelegramHRGroup { get; init; } = null!;
+
+    /// <summary>
+    /// Телефон HR-специалистов
+    /// </summary>
+    public string HRPhone { get; init; } = null!;
 }

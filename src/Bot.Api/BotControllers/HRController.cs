@@ -3,18 +3,20 @@ using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 using Microsoft.Extensions.Options;
+using Telegram.Bot;
 
 namespace Bot.Api.BotControllers;
 
-public sealed record AboutCompanyState;
+public sealed record HRState;
 
-public sealed class AboutCompanyController(
+public sealed class HRController(
     IOptions<AppOptions> appOptions,
-    ITelegramMessageService messageService) : BotControllerState<AboutCompanyState>
+    ITelegramMessageService messageService,
+    ITelegramBotClient botClient) : BotControllerState<HRState>
 {
     public override async ValueTask OnEnter()
     {
-        await ShowAboutCompany();
+        await ShowContacts();
     }
 
     public override async ValueTask OnLeave()
@@ -23,13 +25,12 @@ public sealed class AboutCompanyController(
     }
 
     [Action]
-    public async ValueTask ShowAboutCompany()
+    public async ValueTask ShowContacts()
     {
-        PushL(SharedResource.AboutCompanyText);
+        PushL(SharedResource.HRContactsText);
 
-        RowButton(SharedResource.CompanyVideoButton, appOptions.Value.CompanyVideoUrl);
-        RowButton(SharedResource.CompanyWebsiteButton, appOptions.Value.CompanyWebsiteUrl);
-        RowButton(SharedResource.SocialMediaButton, Q(ShowSocialMedia));
+        RowButton(SharedResource.CallButton, Q(ShowHRPhone));
+        RowButton(SharedResource.HRChatButton, appOptions.Value.TelegramHRGroup);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         var message = await Send();
@@ -38,10 +39,13 @@ public sealed class AboutCompanyController(
     }
 
     [Action]
-    public async ValueTask ShowSocialMedia()
+    public async ValueTask ShowHRPhone()
     {
-        await GlobalState(new SocialMediaState());
+        var message = await botClient.SendContactAsync(Context.GetSafeChatId()!, appOptions.Value.HRPhone, "HR");
+
+        await messageService.InsertAsync(message);
     }
+
 
     [Action]
     public async ValueTask ShowMainMenu()

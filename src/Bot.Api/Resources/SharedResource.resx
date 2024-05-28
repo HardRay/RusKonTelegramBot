@@ -123,8 +123,19 @@
   <data name="AboutCompanyText" xml:space="preserve">
     <value>Группа компаний «РусКон» - это динамично развивающееся объединение, занимающее лидирующие позиции на рынке производства и оптовых поставок технической и ...</value>
   </data>
+  <data name="AdminPanelButton" xml:space="preserve">
+    <value>Панель администратора</value>
+  </data>
+  <data name="AdminPanelText" xml:space="preserve">
+    <value>Панель администратора
+
+Здесь вы можете обновить информацию о вакансиях. Для этого отправьте мне Excel-файл с вакансиями</value>
+  </data>
   <data name="BackToMainMenuButton" xml:space="preserve">
     <value>Вернуться в стартовое меню</value>
+  </data>
+  <data name="CallButton" xml:space="preserve">
+    <value>Звонок</value>
   </data>
   <data name="CompanyVideoButton" xml:space="preserve">
     <value>Видео о компании</value>
@@ -134,6 +145,12 @@
   </data>
   <data name="ContactWithHRButton" xml:space="preserve">
     <value>Связь с отделом кадров</value>
+  </data>
+  <data name="HRChatButton" xml:space="preserve">
+    <value>Чат</value>
+  </data>
+  <data name="HRContactsText" xml:space="preserve">
+    <value>Ты можешь связаться с нашим отделом кадров, позвонив по номеру телефона или написав в чат в Телеграм</value>
   </data>
   <data name="MainMenuGreetings" xml:space="preserve">
     <value>Привет, я бот для поиска работы в группе компаний «РусКон», я могу рассказать тебе о компании и её направлениях, показать актуальные вакансии и помочь связаться с нашим отделом кадров.
