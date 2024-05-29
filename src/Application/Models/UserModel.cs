@@ -1,4 +1,6 @@
-﻿namespace Application.Models;
+﻿using Domain.Models;
+
+namespace Application.Models;
 
 /// <summary>
 /// Модель пользователя
@@ -19,4 +21,9 @@ public sealed class UserModel
     /// Имя пользователя в Telegram
     /// </summary>
     public string? TelegramUserName { get; set; }
+
+    /// <summary>
+    /// Параметры поиска вакансии
+    /// </summary>
+    public VacancyFilterModel VacancyFilter { get; set; } = new();
 }

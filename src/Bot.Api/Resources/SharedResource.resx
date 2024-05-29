@@ -137,6 +137,10 @@
   <data name="CallButton" xml:space="preserve">
     <value>Звонок</value>
   </data>
+  <data name="CitiesStartMessage" xml:space="preserve">
+    <value>Окей, значит ты ищешь работу, давай я покажу тебе наши актуальные вакансии.
+Подскажи, в каком городе ты ищешь работу, или может, ты хочешь работать онлайн?</value>
+  </data>
   <data name="CompanyVideoButton" xml:space="preserve">
     <value>Видео о компании</value>
   </data>
@@ -163,6 +167,15 @@
 
 Помоги мне понять, что ты хочешь, нажав на кнопку ниже</value>
   </data>
+  <data name="OnlineJobButton" xml:space="preserve">
+    <value>Работа онлайн</value>
+  </data>
+  <data name="ShowCitiesButton" xml:space="preserve">
+    <value>Выбрать город</value>
+  </data>
+  <data name="SkipStepButton" xml:space="preserve">
+    <value>Пропустить этот шаг</value>
+  </data>
   <data name="SocialMediaButton" xml:space="preserve">
     <value>Наши социальные сети</value>
   </data>
@@ -178,7 +191,13 @@
   <data name="VacanciesButton" xml:space="preserve">
     <value>Вакансии</value>
   </data>
+  <data name="ViewAllVacanciesButton" xml:space="preserve">
+    <value>Посмотреть все вакансии</value>
+  </data>
   <data name="VKGroupButton" xml:space="preserve">
     <value>Группа в ВК</value>
+  </data>
+  <data name="WrongCityText" xml:space="preserve">
+    <value>Сожалею, но в этом городе у нас нет вакансий</value>
   </data>
 </root>

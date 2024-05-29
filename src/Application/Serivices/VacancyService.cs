@@ -42,4 +42,19 @@ public sealed class VacancyService(IVacancyRepository repository) : IVacancyServ
 
         await repository.InsertManyAsync(vacancies);
     }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<string>> GetAllCitiesAsync()
+    {
+        var vacancies = await repository.FindManyAsync(x => x.City != null);
+
+        var cities = vacancies.Select(x => x.City!).Distinct();
+
+        return cities;
+    }
+
+    public async Task<bool> ValidateCityAsync(string city)
+    {
+        return await repository.FindOneAsync(x => x.City == city) != null;
+    }
 }

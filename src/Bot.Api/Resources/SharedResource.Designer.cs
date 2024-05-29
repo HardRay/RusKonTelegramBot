@@ -117,6 +117,16 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Окей, значит ты ищешь работу, давай я покажу тебе наши актуальные вакансии.
+        ///Подскажи, в каком городе ты ищешь работу, или может, ты хочешь работать онлайн?.
+        /// </summary>
+        public static string CitiesStartMessage {
+            get {
+                return ResourceManager.GetString("CitiesStartMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Видео о компании.
         /// </summary>
         public static string CompanyVideoButton {
@@ -191,6 +201,33 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Работа онлайн.
+        /// </summary>
+        public static string OnlineJobButton {
+            get {
+                return ResourceManager.GetString("OnlineJobButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выбрать город.
+        /// </summary>
+        public static string ShowCitiesButton {
+            get {
+                return ResourceManager.GetString("ShowCitiesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пропустить этот шаг.
+        /// </summary>
+        public static string SkipStepButton {
+            get {
+                return ResourceManager.GetString("SkipStepButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Наши социальные сети.
         /// </summary>
         public static string SocialMediaButton {
@@ -236,11 +273,29 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Посмотреть все вакансии.
+        /// </summary>
+        public static string ViewAllVacanciesButton {
+            get {
+                return ResourceManager.GetString("ViewAllVacanciesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Группа в ВК.
         /// </summary>
         public static string VKGroupButton {
             get {
                 return ResourceManager.GetString("VKGroupButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сожалею, но в этом городе у нас нет вакансий.
+        /// </summary>
+        public static string WrongCityText {
+            get {
+                return ResourceManager.GetString("WrongCityText", resourceCulture);
             }
         }
     }

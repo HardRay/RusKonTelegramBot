@@ -1,6 +1,7 @@
 ﻿using Application.Models;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 
 namespace Application.Mapping;
 
@@ -12,6 +13,9 @@ public sealed class MapperProfiles : Profile
             .ReverseMap();
 
         CreateMap<Message, MessageModel>()
+            .ReverseMap();
+
+        CreateMap<VacancyFilter, VacancyFilterModel>()
             .ReverseMap();
     }
 }

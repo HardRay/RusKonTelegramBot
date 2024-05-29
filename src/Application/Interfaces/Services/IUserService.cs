@@ -12,11 +12,11 @@ public interface IUserService
     /// </summary>
     /// <param name="telegramId">Идентификатор пользователя в Telegram</param>
     /// <returns>Модель пользователя</returns>
-    public Task<UserModel> GetOrCreateUserByTelegramIdAsync(long telegramId);
+    Task<UserModel> GetOrCreateUserByTelegramIdAsync(long telegramId);
 
     /// <summary>
     /// Обновить данные пользователя
     /// </summary>
     /// <param name="userModel">Модель пользователя</param>
-    public Task UpdateUserAsync(UserModel userModel);
+    Task UpdateUserAsync(UserModel userModel);
 }

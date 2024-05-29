@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Common;
+using Domain.Models;
 
 namespace Domain.Entities;
 
@@ -16,4 +17,9 @@ public sealed class User(long telegramId) : BaseEntity
     /// Имя пользователя в Telegram
     /// </summary>
     public string? TelegramUserName { get; set; }
+
+    /// <summary>
+    /// Параметры поиска вакансии
+    /// </summary>
+    public VacancyFilter VacancyFilter { get; set; } = new();
 }

@@ -9,5 +9,16 @@ public interface IVacancyService
     /// Загрузить вакансии из файла
     /// </summary>
     /// <param name="stream">Файл</param>
-    public Task UploadVacanciesAsync(Stream stream);
+    Task UploadVacanciesAsync(Stream stream);
+
+    /// <summary>
+    /// Получить список всех городов
+    /// </summary>
+    /// <returns>Список городов</returns>
+    Task<IEnumerable<string>> GetAllCitiesAsync();
+
+    /// <summary>
+    /// Валидация города
+    /// </summary>
+    Task<bool> ValidateCityAsync(string city);
 }

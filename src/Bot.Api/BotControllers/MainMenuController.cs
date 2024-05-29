@@ -40,9 +40,9 @@ public sealed class MainMenuController(ITelegramMessageService messageService) :
     }
 
     [Action]
-    public ValueTask ShowVacancies()
+    public async ValueTask ShowVacancies()
     {
-        return ValueTask.CompletedTask;
+        await GlobalState(new CityState());
     }
 
     [Action]
