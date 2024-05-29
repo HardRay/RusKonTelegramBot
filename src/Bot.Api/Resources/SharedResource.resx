@@ -162,6 +162,9 @@
   <data name="InvalidDocumentExtentions" xml:space="preserve">
     <value>Неверное расширение файла. Должен быть xlsx или xls</value>
   </data>
+  <data name="JobTypeStartMessage" xml:space="preserve">
+    <value>Хорошо, разобрались с городом и форматом работы, теперь подскажи, где ты хочешь работать?</value>
+  </data>
   <data name="MainMenuGreetings" xml:space="preserve">
     <value>Привет, я бот для поиска работы в группе компаний «РусКон», я могу рассказать тебе о компании и её направлениях, показать актуальные вакансии и помочь связаться с нашим отделом кадров.
 

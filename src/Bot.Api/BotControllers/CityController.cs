@@ -32,7 +32,7 @@ public sealed class CityController(
 
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowCitiesButton));
         RowButton(SharedResource.OnlineJobButton, Q(ShowMainMenu));
-        RowButton(SharedResource.SkipStepButton, Q(ShowMainMenu));
+        RowButton(SharedResource.SkipStepButton, Q(ShowJobTypes));
         RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowMainMenu));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
@@ -88,7 +88,15 @@ public sealed class CityController(
         user.VacancyFilter.IsOnline = false;
         await userService.UpdateUserAsync(user);
 
+        await ShowJobTypes();
+
         Context.StopHandling();
+    }
+
+    [Action]
+    public async ValueTask ShowJobTypes()
+    {
+        await GlobalState(new JobTypeState());
     }
 
     [Action]

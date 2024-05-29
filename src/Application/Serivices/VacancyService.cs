@@ -1,12 +1,29 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
+using Application.Models;
+using AutoMapper;
 using Domain.Entities;
 using OfficeOpenXml;
 
 namespace Application.Serivices;
 
-public sealed class VacancyService(IVacancyRepository repository) : IVacancyService
+public sealed class VacancyService(IVacancyRepository repository, IUserService userService, IMapper mapper) : IVacancyService
 {
+    /// <inheritdoc/>
+    public async Task<IEnumerable<VacancyModel>> GetFilterdVacanciesAsync(long userTelegramId)
+    {
+        var user = await userService.GetOrCreateUserByTelegramIdAsync(userTelegramId);
+        var filter = user.VacancyFilter;
+
+        var vacancies = await repository.FindManyAsync(x =>
+            (filter.IsOnline == null || x.IsOnline == filter.IsOnline) &&
+            (filter.City == null || x.City == filter.City) &&
+            (filter.Type == null || x.Type == filter.Type) &&
+            (filter.Direction == null || x.Direction == filter.Direction));
+
+        return mapper.Map<IEnumerable<VacancyModel>>(vacancies);
+    }
+
     /// <inheritdoc/>
     public async Task UploadVacanciesAsync(Stream stream)
     {

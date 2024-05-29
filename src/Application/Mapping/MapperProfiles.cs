@@ -15,6 +15,9 @@ public sealed class MapperProfiles : Profile
         CreateMap<Message, MessageModel>()
             .ReverseMap();
 
+        CreateMap<Vacancy, VacancyModel>()
+            .ReverseMap();
+
         CreateMap<VacancyFilter, VacancyFilterModel>()
             .ReverseMap();
     }
