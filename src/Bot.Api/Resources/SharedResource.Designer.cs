@@ -99,6 +99,24 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Откликнуться на заявку.
+        /// </summary>
+        public static string ApplyVacancyButton {
+            get {
+                return ResourceManager.GetString("ApplyVacancyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Назад.
+        /// </summary>
+        public static string BackButton {
+            get {
+                return ResourceManager.GetString("BackButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Вернуться в стартовое меню.
         /// </summary>
         public static string BackToMainMenuButton {
@@ -208,6 +226,15 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Оставить резюме.
+        /// </summary>
+        public static string LeaveResumeButton {
+            get {
+                return ResourceManager.GetString("LeaveResumeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Привет, я бот для поиска работы в группе компаний «РусКон», я могу рассказать тебе о компании и её направлениях, показать актуальные вакансии и помочь связаться с нашим отделом кадров.
         ///
         ///Помоги мне понять, что ты хочешь, нажав на кнопку ниже.
@@ -219,11 +246,40 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет подходящей вакансии.
+        /// </summary>
+        public static string NoSuitableVacancyButton {
+            get {
+                return ResourceManager.GetString("NoSuitableVacancyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Не нашлось подходящей вакансии? Давай я уведомлю тебя, когда появятся вакансии по твоим параметрам?
+        ///
+        ///Или можешь оставить своё резюме и наш отдел кадров предложит тебе подходящую вакансию!.
+        /// </summary>
+        public static string NotFoundVacanciesButton {
+            get {
+                return ResourceManager.GetString("NotFoundVacanciesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Работа онлайн.
         /// </summary>
         public static string OnlineJobButton {
             get {
                 return ResourceManager.GetString("OnlineJobButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Задать вопрос.
+        /// </summary>
+        public static string QuestionButton {
+            get {
+                return ResourceManager.GetString("QuestionButton", resourceCulture);
             }
         }
         
@@ -273,11 +329,39 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Подписаться на уведомление.
+        /// </summary>
+        public static string SubscribeToNotificationButton {
+            get {
+                return ResourceManager.GetString("SubscribeToNotificationButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отлично!
+        ///Скоро с тобой свяжется специалист и обсудит детали .
+        /// </summary>
+        public static string SuccessApplyVacancyText {
+            get {
+                return ResourceManager.GetString("SuccessApplyVacancyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Загрузка вакансий из файла прошла успешно!.
         /// </summary>
         public static string SuccessDocumentUploading {
             get {
                 return ResourceManager.GetString("SuccessDocumentUploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отлично, тогда будем на связи.
+        /// </summary>
+        public static string SuccessSubscribtionToNotification {
+            get {
+                return ResourceManager.GetString("SuccessSubscribtionToNotification", resourceCulture);
             }
         }
         
@@ -332,6 +416,15 @@ namespace Bot.Api.Resources {
         public static string WrongDirectionText {
             get {
                 return ResourceManager.GetString("WrongDirectionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Не найдена вакансия с таким идентификатором.
+        /// </summary>
+        public static string WrongVacancyId {
+            get {
+                return ResourceManager.GetString("WrongVacancyId", resourceCulture);
             }
         }
     }

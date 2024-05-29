@@ -1,10 +1,17 @@
-﻿namespace Application.Models;
+﻿using MongoDB.Bson;
+
+namespace Application.Models;
 
 /// <summary>
 /// Модель вакансии
 /// </summary>
 public sealed class VacancyModel
 {
+    /// <summary>
+    /// Идентификатор
+    /// </summary>
+    public ObjectId Id { get; set; }
+
     /// <summary>
     /// Название
     /// </summary>

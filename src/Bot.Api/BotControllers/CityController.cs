@@ -17,6 +17,8 @@ public sealed class CityController(
 {
     public override async ValueTask OnEnter()
     {
+        await ClearVacancyFilter();
+
         await ShowStartScreen();
     }
 

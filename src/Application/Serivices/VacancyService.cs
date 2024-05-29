@@ -7,6 +7,7 @@ using OfficeOpenXml;
 
 namespace Application.Serivices;
 
+/// <inheritdoc/>
 public sealed class VacancyService(IVacancyRepository repository, IUserService userService, IMapper mapper) : IVacancyService
 {
     /// <inheritdoc/>
@@ -22,6 +23,14 @@ public sealed class VacancyService(IVacancyRepository repository, IUserService u
             (filter.Direction == null || x.Direction == filter.Direction));
 
         return mapper.Map<IEnumerable<VacancyModel>>(vacancies);
+    }
+
+    /// <inheritdoc/>
+    public async Task<VacancyModel?> GetVacancyById(string id)
+    {
+        var vacancy = await repository.FindOneAsync(x => x.Id == id);
+
+        return mapper.Map<VacancyModel>(vacancy);
     }
 
     /// <inheritdoc/>

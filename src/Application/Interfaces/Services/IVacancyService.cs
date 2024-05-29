@@ -15,6 +15,13 @@ public interface IVacancyService
     Task<IEnumerable<VacancyModel>> GetFilterdVacanciesAsync(long userTelegramId);
 
     /// <summary>
+    /// Получить вакансию по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор вакансии</param>
+    /// <returns>Вакансия</returns>
+    Task<VacancyModel?> GetVacancyById(string id);
+
+    /// <summary>
     /// Загрузить вакансии из файла
     /// </summary>
     /// <param name="stream">Файл</param>

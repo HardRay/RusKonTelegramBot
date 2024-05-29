@@ -131,6 +131,12 @@
 
 Здесь вы можете обновить информацию о вакансиях. Для этого отправьте мне Excel-файл с вакансиями</value>
   </data>
+  <data name="ApplyVacancyButton" xml:space="preserve">
+    <value>Откликнуться на заявку</value>
+  </data>
+  <data name="BackButton" xml:space="preserve">
+    <value>Назад</value>
+  </data>
   <data name="BackToMainMenuButton" xml:space="preserve">
     <value>Вернуться в стартовое меню</value>
   </data>
@@ -168,13 +174,27 @@
   <data name="JobTypeStartMessage" xml:space="preserve">
     <value>Хорошо, разобрались с городом и форматом работы, теперь подскажи, где ты хочешь работать?</value>
   </data>
+  <data name="LeaveResumeButton" xml:space="preserve">
+    <value>Оставить резюме</value>
+  </data>
   <data name="MainMenuGreetings" xml:space="preserve">
     <value>Привет, я бот для поиска работы в группе компаний «РусКон», я могу рассказать тебе о компании и её направлениях, показать актуальные вакансии и помочь связаться с нашим отделом кадров.
 
 Помоги мне понять, что ты хочешь, нажав на кнопку ниже</value>
   </data>
+  <data name="NoSuitableVacancyButton" xml:space="preserve">
+    <value>Нет подходящей вакансии</value>
+  </data>
+  <data name="NotFoundVacanciesButton" xml:space="preserve">
+    <value>Не нашлось подходящей вакансии? Давай я уведомлю тебя, когда появятся вакансии по твоим параметрам?
+
+Или можешь оставить своё резюме и наш отдел кадров предложит тебе подходящую вакансию!</value>
+  </data>
   <data name="OnlineJobButton" xml:space="preserve">
     <value>Работа онлайн</value>
+  </data>
+  <data name="QuestionButton" xml:space="preserve">
+    <value>Задать вопрос</value>
   </data>
   <data name="ShowCitiesButton" xml:space="preserve">
     <value>Выбрать город</value>
@@ -191,8 +211,18 @@
   <data name="SocialMediaText" xml:space="preserve">
     <value>В наших социальных сетях можно следить за новостями и жизнью компании</value>
   </data>
+  <data name="SubscribeToNotificationButton" xml:space="preserve">
+    <value>Подписаться на уведомление</value>
+  </data>
+  <data name="SuccessApplyVacancyText" xml:space="preserve">
+    <value>Отлично!
+Скоро с тобой свяжется специалист и обсудит детали </value>
+  </data>
   <data name="SuccessDocumentUploading" xml:space="preserve">
     <value>Загрузка вакансий из файла прошла успешно!</value>
+  </data>
+  <data name="SuccessSubscribtionToNotification" xml:space="preserve">
+    <value>Отлично, тогда будем на связи</value>
   </data>
   <data name="TelegramChannelButton" xml:space="preserve">
     <value>Канал в Телеграм</value>
@@ -211,5 +241,8 @@
   </data>
   <data name="WrongDirectionText" xml:space="preserve">
     <value>У нас нет такого направления</value>
+  </data>
+  <data name="WrongVacancyId" xml:space="preserve">
+    <value>Не найдена вакансия с таким идентификатором</value>
   </data>
 </root>
