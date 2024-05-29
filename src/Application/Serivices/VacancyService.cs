@@ -74,4 +74,9 @@ public sealed class VacancyService(IVacancyRepository repository, IUserService u
     {
         return await repository.FindOneAsync(x => x.City == city) != null;
     }
+
+    public async Task<bool> ValidateDirectionAsync(string direction)
+    {
+        return await repository.FindOneAsync(x => x.Direction == direction) != null;
+    }
 }

@@ -154,6 +154,15 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Отлично, теперь выбери направление, которое тебе нравится или посмотри все вакансии по выбранным параметрам.
+        /// </summary>
+        public static string DirectionStartMessage {
+            get {
+                return ResourceManager.GetString("DirectionStartMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка загрузки вакансий.
         /// </summary>
         public static string ErrorDocumentUploading {
@@ -224,6 +233,15 @@ namespace Bot.Api.Resources {
         public static string ShowCitiesButton {
             get {
                 return ResourceManager.GetString("ShowCitiesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выбрать направление.
+        /// </summary>
+        public static string ShowDirectionsButton {
+            get {
+                return ResourceManager.GetString("ShowDirectionsButton", resourceCulture);
             }
         }
         
@@ -305,6 +323,15 @@ namespace Bot.Api.Resources {
         public static string WrongCityText {
             get {
                 return ResourceManager.GetString("WrongCityText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на У нас нет такого направления.
+        /// </summary>
+        public static string WrongDirectionText {
+            get {
+                return ResourceManager.GetString("WrongDirectionText", resourceCulture);
             }
         }
     }

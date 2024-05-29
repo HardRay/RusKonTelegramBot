@@ -30,4 +30,9 @@ public interface IVacancyService
     /// Валидация города
     /// </summary>
     Task<bool> ValidateCityAsync(string city);
+
+    /// <summary>
+    /// Валидация направления
+    /// </summary>
+    Task<bool> ValidateDirectionAsync(string direction);
 }

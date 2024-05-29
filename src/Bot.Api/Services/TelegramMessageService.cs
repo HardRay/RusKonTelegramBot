@@ -6,7 +6,10 @@ using Telegram.Bot.Types;
 namespace Bot.Api.Services;
 
 /// <inheritdoc/>
-public sealed class TelegramMessageService(IMessageService messageService, ITelegramBotClient botClient) : ITelegramMessageService
+public sealed class TelegramMessageService(
+    IMessageService messageService,
+    ITelegramBotClient botClient,
+    ILogger<TelegramMessageService> logger) : ITelegramMessageService
 {
     /// <inheritdoc/>
     public async Task InsertAsync(Message? message)
@@ -27,7 +30,14 @@ public sealed class TelegramMessageService(IMessageService messageService, ITele
 
         foreach (var message in messages)
         {
-            await botClient.DeleteMessageAsync(message.ChatId, message.MessageId);
+            try
+            {
+                await botClient.DeleteMessageAsync(message.ChatId, message.MessageId);
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Ошибка удаления сообщения");
+            }
         }
 
         await messageService.DeleteAllUserMessages(chatId.Value);

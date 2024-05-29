@@ -2,7 +2,6 @@
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Api.BotControllers;
 
@@ -20,7 +19,7 @@ public sealed class JobTypeController(
         if (typesExists)
             await ShowStartScreen();
         else
-            await ShowDirection();
+            await ShowDirections();
 
     }
 
@@ -39,8 +38,8 @@ public sealed class JobTypeController(
         foreach (var type in types)
             RowButton(type, Q(ChooseJobType, [type]));
 
-        RowButton(SharedResource.SkipStepButton, Q(ShowDirection));
-        RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowMainMenu));
+        RowButton(SharedResource.SkipStepButton, Q(ShowDirections));
+        RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         var message = await Send();
@@ -54,10 +53,12 @@ public sealed class JobTypeController(
         var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
         user.VacancyFilter.Type = jobType;
         await userService.UpdateUserAsync(user);
+
+        await ShowDirections();
     }
 
     [Action]
-    public async ValueTask ShowDirection()
+    public async ValueTask ShowDirections()
     {
         await GlobalState(new DirectionState());
     }
@@ -66,6 +67,12 @@ public sealed class JobTypeController(
     public async ValueTask ShowMainMenu()
     {
         await GlobalState(new MainMenuState());
+    }
+
+    [Action]
+    public async ValueTask ShowVacancies()
+    {
+        await GlobalState(new VacanciesState());
     }
 
     [Action("Start")]
@@ -93,8 +100,8 @@ public sealed class JobTypeController(
 
         var vacancies = await vacancyService.GetFilterdVacanciesAsync(userTelegramId.Value);
         var types = vacancies
-            .Select(x => x.Type)
-            .Where(x => !string.IsNullOrEmpty(x))
+            .Where(x => !string.IsNullOrEmpty(x.Type))
+            .Select(x => x.Type!)
             .Distinct();
 
         return types;

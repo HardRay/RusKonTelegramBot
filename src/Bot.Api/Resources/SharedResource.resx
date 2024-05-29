@@ -150,6 +150,9 @@
   <data name="ContactWithHRButton" xml:space="preserve">
     <value>Связь с отделом кадров</value>
   </data>
+  <data name="DirectionStartMessage" xml:space="preserve">
+    <value>Отлично, теперь выбери направление, которое тебе нравится или посмотри все вакансии по выбранным параметрам</value>
+  </data>
   <data name="ErrorDocumentUploading" xml:space="preserve">
     <value>Ошибка загрузки вакансий</value>
   </data>
@@ -175,6 +178,9 @@
   </data>
   <data name="ShowCitiesButton" xml:space="preserve">
     <value>Выбрать город</value>
+  </data>
+  <data name="ShowDirectionsButton" xml:space="preserve">
+    <value>Выбрать направление</value>
   </data>
   <data name="SkipStepButton" xml:space="preserve">
     <value>Пропустить этот шаг</value>
@@ -202,5 +208,8 @@
   </data>
   <data name="WrongCityText" xml:space="preserve">
     <value>Сожалею, но в этом городе у нас нет вакансий</value>
+  </data>
+  <data name="WrongDirectionText" xml:space="preserve">
+    <value>У нас нет такого направления</value>
   </data>
 </root>

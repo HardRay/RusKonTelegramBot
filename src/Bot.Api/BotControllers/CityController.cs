@@ -1,9 +1,9 @@
 ﻿using Application.Interfaces.Services;
+using Bot.Api.Helpers;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 using Telegram.Bot;
-using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Api.BotControllers;
@@ -33,7 +33,7 @@ public sealed class CityController(
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowCitiesButton));
         RowButton(SharedResource.OnlineJobButton, Q(ShowMainMenu));
         RowButton(SharedResource.SkipStepButton, Q(ShowJobTypes));
-        RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowMainMenu));
+        RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         var message = await Send();
@@ -54,8 +54,8 @@ public sealed class CityController(
 
         var inlineQueryText = Context.Update.InlineQuery?.Query;
         var cities = await vacancyService.GetAllCitiesAsync();
-        var queryResults = GenerateInlineCitiesListAsync(cities, inlineQueryText);
-        await Context.Bot.Client.AnswerInlineQueryAsync(inlineQuery.Id, queryResults);
+        var queryResults = InlineHelper.GenerateInlineListAsync(cities, inlineQueryText);
+        await Context.Bot.Client.AnswerInlineQueryAsync(inlineQuery.Id, queryResults, cacheTime: 1);
 
         Context.StopHandling();
     }
@@ -105,6 +105,12 @@ public sealed class CityController(
         await GlobalState(new MainMenuState());
     }
 
+    [Action]
+    public async ValueTask ShowVacancies()
+    {
+        await GlobalState(new VacanciesState());
+    }
+
     [Action("Start")]
     [Action("/start", "Показать меню")]
     [Filter(Filters.CurrentGlobalState)]
@@ -115,26 +121,11 @@ public sealed class CityController(
         await GlobalState(new MainMenuState());
     }
 
-    private static List<InlineQueryResultArticle> GenerateInlineCitiesListAsync(IEnumerable<string> allCities, string? paramSearch = "")
+    private async Task ClearVacancyFilter()
     {
-        if (string.IsNullOrEmpty(paramSearch))
-        {
-            return allCities
-              .Select(r => new InlineQueryResultArticle(r, r, new InputTextMessageContent(r)))
-              .Take(10)
-              .ToList();
-        }
+        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
 
-        var result = allCities
-          .Where(c => c.Contains(paramSearch, StringComparison.OrdinalIgnoreCase))
-          .Select(r => new InlineQueryResultArticle(r, r, new InputTextMessageContent(r)))
-          .ToList();
-
-        if (result.Count > 50)
-        {
-            return result.Take(10).ToList();
-        }
-
-        return result;
+        user.VacancyFilter = new();
+        await userService.UpdateUserAsync(user);
     }
 }
