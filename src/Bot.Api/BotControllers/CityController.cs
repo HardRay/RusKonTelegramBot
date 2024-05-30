@@ -33,7 +33,7 @@ public sealed class CityController(
         PushL(SharedResource.CitiesStartMessage);
 
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowCitiesButton));
-        RowButton(SharedResource.OnlineJobButton, Q(ShowMainMenu));
+        RowButton(SharedResource.OnlineJobButton, Q(ShowOnlineJobs));
         RowButton(SharedResource.SkipStepButton, Q(ShowJobTypes));
         RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
@@ -93,6 +93,16 @@ public sealed class CityController(
         await ShowJobTypes();
 
         Context.StopHandling();
+    }
+
+    [Action]
+    public async ValueTask ShowOnlineJobs()
+    {
+        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        user.VacancyFilter.IsOnline = true;
+        await userService.UpdateUserAsync(user);
+
+        await GlobalState(new VacanciesState());
     }
 
     [Action]
