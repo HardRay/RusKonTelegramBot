@@ -19,6 +19,16 @@ public sealed class User(long telegramId) : BaseEntity
     public string? TelegramUserName { get; set; }
 
     /// <summary>
+    /// Имя пользователя
+    /// </summary>
+    public string? FirstName { get; set; }
+
+    /// <summary>
+    /// Фамилия пользователя
+    /// </summary>
+    public string? LastName { get; set; }
+
+    /// <summary>
     /// Параметры поиска вакансии
     /// </summary>
     public VacancyFilter VacancyFilter { get; set; } = new();

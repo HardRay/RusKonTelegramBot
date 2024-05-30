@@ -15,6 +15,8 @@ public sealed class UserRepository(IMongoCollectionProvider mongoCollectionProvi
         var updater = Builders<User>.Update
             .Set(x => x.TelegramId, user.TelegramId)
             .Set(x => x.TelegramUserName, user.TelegramUserName)
+            .Set(x => x.FirstName, user.FirstName)
+            .Set(x => x.LastName, user.LastName)
             .Set(x => x.VacancyFilter, user.VacancyFilter); 
 
         await FindOneAndUpdateAsync(x=>x.Id == user.Id, updater);

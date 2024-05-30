@@ -26,9 +26,14 @@ public sealed class AppOptions
     public string VKGroupUrl { get; init; } = null!;
 
     /// <summary>
-    /// Группа HR-специалистов
+    /// Идентификатор чата HR-специалистов
     /// </summary>
-    public string TelegramHRGroup { get; init; } = null!;
+    public long TelegramHRChatId { get; init; }
+
+    /// <summary>
+    /// Ссылка на чат HR-специалистов
+    /// </summary>
+    public string TelegramHRChat { get; init; } = null!;
 
     /// <summary>
     /// Телефон HR-специалистов

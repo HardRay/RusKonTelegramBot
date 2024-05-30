@@ -5,6 +5,9 @@ using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 using Microsoft.Extensions.Options;
+using System.Text;
+using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
 
 namespace Bot.Api.BotControllers;
 
@@ -102,9 +105,11 @@ public sealed class VacanciesController(
 
         await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
 
-        await ShowVacancyDescription(vacancy);
+        var vacancyDescription = await GetVacancyDescription(vacancy);
+        PushLL(vacancyDescription);
+
         Button(SharedResource.ApplyVacancyButton, Q(ApplyVacancy, vacancyId));
-        Button(SharedResource.QuestionButton, appOptions.Value.TelegramHRGroup);
+        Button(SharedResource.QuestionButton, appOptions.Value.TelegramHRChat);
         RowButton(SharedResource.BackButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
@@ -118,33 +123,69 @@ public sealed class VacanciesController(
         await messageService.InsertAsync(await Send());
     }
 
-    private ValueTask ShowVacancyDescription(VacancyModel vacancy)
+    private ValueTask<string> GetVacancyDescription(VacancyModel vacancy)
     {
-        PushL($"<b>{vacancy.Name}</b>");
+        var stringBuilder = new StringBuilder();
+        stringBuilder.Append($"<b>{vacancy.Name}</b>");
         if (!string.IsNullOrEmpty(vacancy.City))
-            PushL($"Город: {vacancy.City}");
+            stringBuilder.Append($"{Environment.NewLine}Город: {vacancy.City}");
         if (!string.IsNullOrEmpty(vacancy.Format))
-            PushL($"Формат: {vacancy.Format}");
+            stringBuilder.Append($"{Environment.NewLine}Формат: {vacancy.Format}");
         if (!string.IsNullOrEmpty(vacancy.Type))
-            PushL($"Тип: {vacancy.Type}");
+            stringBuilder.Append($"{Environment.NewLine}Тип: {vacancy.Type}");
         if (!string.IsNullOrEmpty(vacancy.Schedule))
-            PushL($"График: {vacancy.Schedule}");
+            stringBuilder.Append($"{Environment.NewLine}График: {vacancy.Schedule}");
         if (!string.IsNullOrEmpty(vacancy.Salary))
-            PushL($"Зарплата: {vacancy.Salary}");
+            stringBuilder.Append($"{Environment.NewLine}Зарплата: {vacancy.Salary}");
         if (!string.IsNullOrEmpty(vacancy.Direction))
-            PushL($"Направление: {vacancy.Direction}");
+            stringBuilder.Append($"{Environment.NewLine}Направление: {vacancy.Direction}");
         if (!string.IsNullOrEmpty(vacancy.DirectionDescription))
-            PushL($"Описание направления: {vacancy.DirectionDescription}");
+            stringBuilder.Append($"{Environment.NewLine}Описание направления: {vacancy.DirectionDescription}");
 
-        return ValueTask.CompletedTask;
+        var description = stringBuilder.ToString();
+        return ValueTask.FromResult(description);
     }
 
     [Action]
     public async ValueTask ApplyVacancy(string vacancyId)
     {
+        await SendRequestToHr(vacancyId);
+
         PushL(SharedResource.SuccessApplyVacancyText);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
         await messageService.InsertAsync(await Send());
+    }
+
+    private async ValueTask SendRequestToHr(string vacancyId)
+    {
+        var vacancy = await vacancyService.GetVacancyById(vacancyId);
+        if (vacancy == null)
+        {
+            await ShowWrongVacancyIdMessage();
+            return;
+        }
+
+        var chatId = Context.GetSafeChatId();
+        if (chatId == null)
+            return;
+
+        var user = await userService.GetOrCreateUserByTelegramIdAsync(chatId.Value);
+        var firstName = user.FirstName;
+        var lastName = user.LastName;
+
+        var nameBuilder = new StringBuilder();
+        nameBuilder.Append(firstName);
+        if (!string.IsNullOrEmpty(lastName))
+        {
+            nameBuilder.Append(" ");
+            nameBuilder.Append(lastName);
+        }
+
+        var userName = $"Автор: <a href=\"tg://user?id={chatId}\">{nameBuilder}</a>";
+        var vacancyDescription = GetVacancyDescription(vacancy);
+
+        var messageText = string.Format(SharedResource.NewRequestText, userName, vacancyDescription);
+        await Client.SendTextMessageAsync(appOptions.Value.TelegramHRChatId, messageText, ParseMode.Html);
     }
 
     [Action]

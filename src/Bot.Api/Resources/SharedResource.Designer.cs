@@ -246,6 +246,16 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} оставил(а) заявку на вакансию:
+        ///{1}.
+        /// </summary>
+        public static string NewRequestText {
+            get {
+                return ResourceManager.GetString("NewRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Нет подходящей вакансии.
         /// </summary>
         public static string NoSuitableVacancyButton {

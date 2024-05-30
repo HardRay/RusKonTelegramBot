@@ -30,7 +30,7 @@ public sealed class HRController(
         PushL(SharedResource.HRContactsText);
 
         RowButton(SharedResource.CallButton, Q(ShowHRPhone));
-        RowButton(SharedResource.HRChatButton, appOptions.Value.TelegramHRGroup);
+        RowButton(SharedResource.HRChatButton, appOptions.Value.TelegramHRChat);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         var message = await Send();

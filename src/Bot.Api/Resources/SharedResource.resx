@@ -182,6 +182,10 @@
 
 Помоги мне понять, что ты хочешь, нажав на кнопку ниже</value>
   </data>
+  <data name="NewRequestText" xml:space="preserve">
+    <value>{0} оставил(а) заявку на вакансию:
+{1}</value>
+  </data>
   <data name="NoSuitableVacancyButton" xml:space="preserve">
     <value>Нет подходящей вакансии</value>
   </data>

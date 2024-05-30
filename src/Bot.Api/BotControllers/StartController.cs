@@ -24,6 +24,8 @@ public sealed class StartController(
         var user = await userService.GetOrCreateUserByTelegramIdAsync(userTelegramId.Value);
 
         user.TelegramUserName = Context.GetUsername();
+        user.FirstName = Context.Update.Message?.From?.FirstName;
+        user.LastName = Context.Update.Message?.From?.LastName;
         await userService.UpdateUserAsync(user);
 
         await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
