@@ -39,4 +39,9 @@ public sealed class AppOptions
     /// Телефон HR-специалистов
     /// </summary>
     public string HRPhone { get; init; } = null!;
+
+    /// <summary>
+    /// Идентификатор администратора в Telegram
+    /// </summary>
+    public long AdminTelegramId { get; init; }
 }

@@ -1,12 +1,14 @@
-﻿using Bot.Api.Resources;
+﻿using Bot.Api.Options;
+using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
+using Microsoft.Extensions.Options;
 
 namespace Bot.Api.BotControllers;
 
 public sealed record MainMenuState;
 
-public sealed class MainMenuController(ITelegramMessageService messageService) : BotControllerState<MainMenuState>
+public sealed class MainMenuController(ITelegramMessageService messageService, IOptions<AppOptions> appOptions) : BotControllerState<MainMenuState>
 {
     public override async ValueTask OnEnter()
     {
@@ -21,12 +23,18 @@ public sealed class MainMenuController(ITelegramMessageService messageService) :
     [Action]
     public async ValueTask ShowMainMenu()
     {
+        var userId = Context.GetSafeChatId();
+
         PushL(SharedResource.MainMenuGreetings);
 
         RowButton(SharedResource.AboutCompanyButton, Q(ShowAboutCompany));
         RowButton(SharedResource.VacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.ContactWithHRButton, Q(ContactWithHR));
-        RowButton(SharedResource.AdminPanelButton, Q(ShowAdminPanel));
+
+        if (userId == appOptions.Value.AdminTelegramId)
+        {
+            RowButton(SharedResource.AdminPanelButton, Q(ShowAdminPanel));
+        }
 
         var message = await Send();
 
