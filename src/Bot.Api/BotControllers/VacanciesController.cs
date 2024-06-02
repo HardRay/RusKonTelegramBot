@@ -189,21 +189,7 @@ public sealed class VacanciesController(
     [Action]
     public async ValueTask ShowNotFoundVacanciesMessage()
     {
-        PushL(SharedResource.NotFoundVacanciesButton);
-
-        RowButton(SharedResource.SubscribeToNotificationButton, Q(SubscribeToNotification));
-        RowButton(SharedResource.LeaveResumeButton, Q(ShowMainMenu));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
-
-        await messageService.InsertAsync(await Send());
-    }
-
-    [Action]
-    public async ValueTask SubscribeToNotification()
-    {
-        PushL(SharedResource.SuccessSubscribtionToNotification);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
-        await messageService.InsertAsync(await Send());
+        await GlobalState(new NotFoundVacanciesState());
     }
 
     [Action]
