@@ -123,6 +123,10 @@
   <data name="AboutCompanyText" xml:space="preserve">
     <value>Группа компаний «РусКон» - это динамично развивающееся объединение, занимающее лидирующие позиции на рынке производства и оптовых поставок технической и ...</value>
   </data>
+  <data name="AcceptedResumeMessage" xml:space="preserve">
+    <value>Супер! Твоё резюме принято!
+Сразу же напишем тебе, как найдём подходящую вакансию</value>
+  </data>
   <data name="AdminPanelButton" xml:space="preserve">
     <value>Панель администратора</value>
   </data>
@@ -186,6 +190,9 @@
     <value>{0} оставил(а) заявку на вакансию:
 {1}</value>
   </data>
+  <data name="NewResumeText" xml:space="preserve">
+    <value>{0} оставил(а) своё резюме</value>
+  </data>
   <data name="NoSuitableVacancyButton" xml:space="preserve">
     <value>Нет подходящей вакансии</value>
   </data>
@@ -199,6 +206,9 @@
   </data>
   <data name="QuestionButton" xml:space="preserve">
     <value>Задать вопрос</value>
+  </data>
+  <data name="ResumeStartMessage" xml:space="preserve">
+    <value>Прикрепи своё резюме или напиши его текстом в чат</value>
   </data>
   <data name="ShowCitiesButton" xml:space="preserve">
     <value>Выбрать город</value>

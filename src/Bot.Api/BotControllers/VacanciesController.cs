@@ -175,7 +175,7 @@ public sealed class VacanciesController(
         nameBuilder.Append(firstName);
         if (!string.IsNullOrEmpty(lastName))
         {
-            nameBuilder.Append(" ");
+            nameBuilder.Append(' ');
             nameBuilder.Append(lastName);
         }
 

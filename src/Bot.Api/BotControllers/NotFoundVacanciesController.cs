@@ -24,7 +24,7 @@ public sealed class NotFoundVacanciesController(ITelegramMessageService messageS
         PushL(SharedResource.NotFoundVacanciesButton);
 
         RowButton(SharedResource.SubscribeToNotificationButton, Q(SubscribeToNotification));
-        RowButton(SharedResource.LeaveResumeButton, Q(ShowMainMenu));
+        RowButton(SharedResource.LeaveResumeButton, Q(LeaveResume));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         await messageService.InsertAsync(await Send());
@@ -36,6 +36,12 @@ public sealed class NotFoundVacanciesController(ITelegramMessageService messageS
         PushL(SharedResource.SuccessSubscribtionToNotification);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
         await messageService.InsertAsync(await Send());
+    }
+
+    [Action]
+    public async ValueTask LeaveResume()
+    {
+        await GlobalState(new ResumeState());
     }
 
     [Action]

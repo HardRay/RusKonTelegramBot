@@ -79,6 +79,16 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Супер! Твоё резюме принято!
+        ///Сразу же напишем тебе, как найдём подходящую вакансию.
+        /// </summary>
+        public static string AcceptedResumeMessage {
+            get {
+                return ResourceManager.GetString("AcceptedResumeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Панель администратора.
         /// </summary>
         public static string AdminPanelButton {
@@ -256,6 +266,15 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} оставил(а) своё резюме.
+        /// </summary>
+        public static string NewResumeText {
+            get {
+                return ResourceManager.GetString("NewResumeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Нет подходящей вакансии.
         /// </summary>
         public static string NoSuitableVacancyButton {
@@ -290,6 +309,15 @@ namespace Bot.Api.Resources {
         public static string QuestionButton {
             get {
                 return ResourceManager.GetString("QuestionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Прикрепи своё резюме или напиши его текстом в чат.
+        /// </summary>
+        public static string ResumeStartMessage {
+            get {
+                return ResourceManager.GetString("ResumeStartMessage", resourceCulture);
             }
         }
         
