@@ -38,11 +38,6 @@ public sealed class VacancyModel
     public string? Type { get; set; }
 
     /// <summary>
-    /// График
-    /// </summary>
-    public string? Schedule { get; set; }
-
-    /// <summary>
     /// Зарплата
     /// </summary>
     public string? Salary { get; set; }
@@ -53,7 +48,7 @@ public sealed class VacancyModel
     public string? Direction { get; set; }
 
     /// <summary>
-    /// Описание направления
+    /// Дополнительные атрибуты
     /// </summary>
-    public string? DirectionDescription { get; set; }
+    public IEnumerable<AdditionalAtributeModel> AdditionalAtributes { get; set; } = [];
 }

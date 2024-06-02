@@ -50,7 +50,7 @@ public sealed class VacanciesController(
             if (!string.IsNullOrEmpty(vacancy.Salary))
                 PushL(vacancy.Salary);
             PushL($"Подробнее: /vacancy_{vacancy.Id}");
-
+            
             PushL();
         }
 
@@ -133,14 +133,12 @@ public sealed class VacanciesController(
             stringBuilder.Append($"{Environment.NewLine}Формат: {vacancy.Format}");
         if (!string.IsNullOrEmpty(vacancy.Type))
             stringBuilder.Append($"{Environment.NewLine}Тип: {vacancy.Type}");
-        if (!string.IsNullOrEmpty(vacancy.Schedule))
-            stringBuilder.Append($"{Environment.NewLine}График: {vacancy.Schedule}");
         if (!string.IsNullOrEmpty(vacancy.Salary))
             stringBuilder.Append($"{Environment.NewLine}Зарплата: {vacancy.Salary}");
         if (!string.IsNullOrEmpty(vacancy.Direction))
             stringBuilder.Append($"{Environment.NewLine}Направление: {vacancy.Direction}");
-        if (!string.IsNullOrEmpty(vacancy.DirectionDescription))
-            stringBuilder.Append($"{Environment.NewLine}Описание направления: {vacancy.DirectionDescription}");
+        foreach (var additionalAttribute in vacancy.AdditionalAtributes)
+            stringBuilder.Append($"{Environment.NewLine}{additionalAttribute.Name}: {additionalAttribute.Value}");
 
         var description = stringBuilder.ToString();
         return ValueTask.FromResult(description);
@@ -181,7 +179,7 @@ public sealed class VacanciesController(
             nameBuilder.Append(lastName);
         }
 
-        var userName = $"Автор: <a href=\"tg://user?id={chatId}\">{nameBuilder}</a>";
+        var userName = $"<a href=\"tg://user?id={chatId}\">{nameBuilder}</a>";
         var vacancyDescription = GetVacancyDescription(vacancy);
 
         var messageText = string.Format(SharedResource.NewRequestText, userName, vacancyDescription);

@@ -11,14 +11,15 @@ public sealed class MapperProfiles : Profile
     {
         CreateMap<User, UserModel>()
             .ReverseMap();
+        CreateMap<VacancyFilter, VacancyFilterModel>()
+            .ReverseMap();
 
         CreateMap<Message, MessageModel>()
             .ReverseMap();
 
         CreateMap<Vacancy, VacancyModel>()
             .ReverseMap();
-
-        CreateMap<VacancyFilter, VacancyFilterModel>()
+        CreateMap<AdditionalAtribute, AdditionalAtributeModel>()
             .ReverseMap();
     }
 }
