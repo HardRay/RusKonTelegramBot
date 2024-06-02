@@ -65,13 +65,16 @@ public sealed class CityController(
     [On(Handle.Unknown)]
     [Filter(Filters.Text)]
     [Filter(And: Filters.CurrentGlobalState)]
-    private async Task UnknownText()
+    private async Task UnknownCityText()
     {
         var message = Context.Update.Message;
         if (message == null)
         {
             return;
         }
+
+        Context.StopHandling();
+
         await messageService.InsertAsync(message);
 
         var city = message.Text!;
@@ -91,8 +94,6 @@ public sealed class CityController(
         await userService.UpdateUserAsync(user);
 
         await ShowJobTypes();
-
-        Context.StopHandling();
     }
 
     [Action]

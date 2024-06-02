@@ -81,13 +81,16 @@ public sealed class DirectionController(
     [On(Handle.Unknown)]
     [Filter(Filters.Text)]
     [Filter(And: Filters.CurrentGlobalState)]
-    private async Task UnknownText()
+    private async Task UnknownDirectionText()
     {
         var message = Context.Update.Message;
         if (message == null)
         {
             return;
         }
+
+        Context.StopHandling();
+
         await messageService.InsertAsync(message);
 
         var direction = message.Text!;
@@ -106,8 +109,6 @@ public sealed class DirectionController(
         await userService.UpdateUserAsync(user);
 
         await ShowVacancies();
-
-        Context.StopHandling();
     }
 
 
