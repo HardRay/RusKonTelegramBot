@@ -12,9 +12,16 @@ namespace Application.Serivices;
 public sealed class VacancyService(
     IVacancyRepository repository,
     IUserService userService,
-    ISubscriptionService subscriptionService,
     IMapper mapper) : IVacancyService
 {
+    /// <inheritdoc/>
+    public async Task<IEnumerable<VacancyModel>> GetAllAsync()
+    {
+        var vacancies = await repository.FindManyAsync(x => true);
+
+        return mapper.Map<IEnumerable<VacancyModel>>(vacancies);
+    }
+
     /// <inheritdoc/>
     public async Task<IEnumerable<VacancyModel>> GetFilterdVacanciesAsync(long userTelegramId)
     {
@@ -46,8 +53,6 @@ public sealed class VacancyService(
         await repository.DeleteManyAsync(x => true);
 
         await repository.InsertManyAsync(vacancies);
-
-
     }
 
     /// <inheritdoc/>

@@ -1,10 +1,12 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
+using Bot.Api.Constants;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 using Microsoft.Extensions.Options;
+using OfficeOpenXml.Sorting;
 using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
@@ -196,6 +198,19 @@ public sealed class VacanciesController(
     public async ValueTask ShowMainMenu()
     {
         await GlobalState(new MainMenuState());
+    }
+
+    [On(Handle.Unknown)]
+    [Filter(Filters.CurrentGlobalState)]
+    [Filter(And: Filters.CallbackQuery)]
+    public async Task UnknownCallback()
+    {
+        var callbackQuery = Context.GetCallbackQuery();
+        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
+        {
+            await GlobalState(new VacanciesState());
+        }
+        Context.StopHandling();
     }
 
     [Action("Start")]

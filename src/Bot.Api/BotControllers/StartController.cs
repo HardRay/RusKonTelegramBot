@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Bot.Api.Constants;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 
@@ -43,6 +44,19 @@ public sealed class StartController(
         var message = await Send();
 
         await messageService.InsertAsync(message);
+    }
+
+    [On(Handle.Unknown)]
+    [Filter(Filters.CurrentGlobalState)]
+    [Filter(And: Filters.CallbackQuery)]
+    public async Task UnknownCallback()
+    {
+        var callbackQuery = Context.GetCallbackQuery();
+        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
+        {
+            Context.StopHandling();
+            await GlobalState(new VacanciesState());
+        }
     }
 
     [On(Handle.Exception)]

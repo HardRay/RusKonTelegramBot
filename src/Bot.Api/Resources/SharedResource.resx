@@ -193,6 +193,10 @@
   <data name="NewResumeText" xml:space="preserve">
     <value>{0} оставил(а) своё резюме</value>
   </data>
+  <data name="NewVacanciesMessage" xml:space="preserve">
+    <value>Привет!
+Мы обновили список вакансий. Не хочешь посмотреть?</value>
+  </data>
   <data name="NoSuitableVacancyButton" xml:space="preserve">
     <value>Нет подходящей вакансии</value>
   </data>
@@ -216,6 +220,9 @@
   <data name="ShowDirectionsButton" xml:space="preserve">
     <value>Выбрать направление</value>
   </data>
+  <data name="ShowNewVacanciesButton" xml:space="preserve">
+    <value>Показать все вакансии</value>
+  </data>
   <data name="SkipStepButton" xml:space="preserve">
     <value>Пропустить этот шаг</value>
   </data>
@@ -233,7 +240,7 @@
 Скоро с тобой свяжется специалист и обсудит детали </value>
   </data>
   <data name="SuccessDocumentUploading" xml:space="preserve">
-    <value>Загрузка вакансий из файла прошла успешно!</value>
+    <value>Загрузка вакансий из файла и уведомление пользователей прошли успешно!</value>
   </data>
   <data name="SuccessSubscribtionToNotification" xml:space="preserve">
     <value>Отлично, тогда будем на связи</value>

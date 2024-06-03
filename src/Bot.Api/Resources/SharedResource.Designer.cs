@@ -275,6 +275,16 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Привет!
+        ///Мы обновили список вакансий. Не хочешь посмотреть?.
+        /// </summary>
+        public static string NewVacanciesMessage {
+            get {
+                return ResourceManager.GetString("NewVacanciesMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Нет подходящей вакансии.
         /// </summary>
         public static string NoSuitableVacancyButton {
@@ -340,6 +350,15 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Показать все вакансии.
+        /// </summary>
+        public static string ShowNewVacanciesButton {
+            get {
+                return ResourceManager.GetString("ShowNewVacanciesButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Пропустить этот шаг.
         /// </summary>
         public static string SkipStepButton {
@@ -386,7 +405,7 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Загрузка вакансий из файла прошла успешно!.
+        ///   Ищет локализованную строку, похожую на Загрузка вакансий из файла и уведомление пользователей прошли успешно!.
         /// </summary>
         public static string SuccessDocumentUploading {
             get {

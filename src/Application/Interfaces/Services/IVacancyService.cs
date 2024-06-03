@@ -8,6 +8,12 @@ namespace Application.Interfaces.Services;
 public interface IVacancyService
 {
     /// <summary>
+    /// Получить все вакансии
+    /// </summary>
+    /// <returns>Список всех вакансий</returns>
+    Task<IEnumerable<VacancyModel>> GetAllAsync();
+
+    /// <summary>
     /// Получить отфильтрованные вакансии по фильтру пользователя
     /// </summary>
     /// <param name="userTelegramId">Идентификатор пользователя в Telegram</param>

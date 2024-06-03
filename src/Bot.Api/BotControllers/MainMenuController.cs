@@ -1,4 +1,5 @@
-﻿using Bot.Api.Options;
+﻿using Bot.Api.Constants;
+using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
@@ -73,5 +74,18 @@ public sealed class MainMenuController(ITelegramMessageService messageService, I
         await messageService.InsertAsync(Context.Update.Message);
 
         await ShowMainMenu();
+    }
+
+    [On(Handle.Unknown)]
+    [Filter(Filters.CurrentGlobalState)]
+    [Filter(And: Filters.CallbackQuery)]
+    public async Task UnknownCallback()
+    {
+        var callbackQuery = Context.GetCallbackQuery();
+        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
+        {
+            Context.StopHandling();
+            await GlobalState(new VacanciesState());
+        }
     }
 }
