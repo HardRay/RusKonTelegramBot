@@ -1,12 +1,18 @@
-﻿using Bot.Api.Resources;
+﻿using Application.Interfaces.Services;
+using Application.Models;
+using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
+using Domain.Entities;
 
 namespace Bot.Api.BotControllers;
 
 public sealed record NotFoundVacanciesState;
 
-public sealed class NotFoundVacanciesController(ITelegramMessageService messageService) : BotControllerState<NotFoundVacanciesState>
+public sealed class NotFoundVacanciesController(
+    ITelegramMessageService messageService,
+    IUserService userService,
+    ISubscriptionService subscriptionService) : BotControllerState<NotFoundVacanciesState>
 {
     public override async ValueTask OnEnter()
     {
@@ -33,6 +39,18 @@ public sealed class NotFoundVacanciesController(ITelegramMessageService messageS
     [Action]
     public async ValueTask SubscribeToNotification()
     {
+        var userId = Context.GetSafeChatId();
+        if (userId == null)
+            return;
+        var user = await userService.GetOrCreateUserByTelegramIdAsync(userId.Value);
+
+        var subscription = new SubscriptionModel()
+        {
+            UserTelegramId = userId.Value,
+            VacancyFilter = user.VacancyFilter
+        };
+        await subscriptionService.CreateAsync(subscription);
+
         PushL(SharedResource.SuccessSubscribtionToNotification);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
         await messageService.InsertAsync(await Send());

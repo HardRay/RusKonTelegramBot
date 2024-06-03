@@ -21,5 +21,8 @@ public sealed class MapperProfiles : Profile
             .ReverseMap();
         CreateMap<AdditionalAtribute, AdditionalAtributeModel>()
             .ReverseMap();
+
+        CreateMap<Subscription, SubscriptionModel>()
+            .ReverseMap();
     }
 }
