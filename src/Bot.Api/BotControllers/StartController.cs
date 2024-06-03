@@ -46,19 +46,6 @@ public sealed class StartController(
         await messageService.InsertAsync(message);
     }
 
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
-    }
-
     [On(Handle.Exception)]
     public ValueTask CatchExeption(Exception ex)
     {
