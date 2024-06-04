@@ -115,12 +115,12 @@ public sealed class VacancyService(
             vacancies.Add(new Vacancy()
             {
                 Name = cells[row, 1].Value.ToString()!.Trim(),
-                City = cells[row, 2].Value.ToString()?.Trim(),
-                Format = cells[row, 3].Value.ToString()?.Trim(),
-                IsOnline = cells[row, 3].Value.ToString()?.Trim() == "Онлайн",
-                Type = cells[row, 4].Value.ToString()?.Trim(),
-                Direction = cells[row, 5].Value.ToString()?.Trim(),
-                Salary = cells[row, 6].Value.ToString()?.Trim(),
+                City = cells[row, 2].Value?.ToString()?.Trim(),
+                Format = cells[row, 3].Value?.ToString()?.Trim(),
+                IsOnline = cells[row, 3].Value?.ToString()?.Trim() == "Онлайн",
+                Type = cells[row, 4].Value?.ToString()?.Trim(),
+                Direction = cells[row, 5].Value?.ToString()?.Trim(),
+                Salary = cells[row, 6].Value?.ToString()?.Trim(),
                 AdditionalAtributes = additionalAttributes
             });
 
