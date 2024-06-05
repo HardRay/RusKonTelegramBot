@@ -1,23 +1,61 @@
 ﻿using Application.Interfaces.Services;
 using Bot.Api.Services.Interfaces;
+using Domain.Enums;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Api.Services;
 
 /// <inheritdoc/>
 public sealed class TelegramMessageService(
     IMessageService messageService,
-    ITelegramBotClient botClient,
+    ITelegramBotClient client,
     ILogger<TelegramMessageService> logger) : ITelegramMessageService
 {
+    /// <inheritdoc/>
+    public async Task UpdateOrSendMessageAsync(long? chatId, string text, IReplyMarkup? replyMarkup)
+    {
+        if (chatId == null)
+            return;
+
+        var lastMessage = await messageService.GetLastUserMessageAsync(chatId.Value);
+
+        if (lastMessage != null)
+        {
+            const int maxHoursSinceLastMessage = 48;
+            var hoursSinceLastMessage = (DateTime.UtcNow - lastMessage.CreateDateTimeUtc).Hours;
+
+            if (lastMessage.Sender == MessageSender.Bot && hoursSinceLastMessage < maxHoursSinceLastMessage)
+            {
+                try
+                {
+                    await client.EditMessageTextAsync(chatId.Value, lastMessage.MessageId, text, ParseMode.Html, replyMarkup: replyMarkup as InlineKeyboardMarkup);
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Ошибка редактирования сообщения");
+                }
+            }
+        }
+
+        var message = await client.SendTextMessageAsync(chatId, text, ParseMode.Html, replyMarkup: replyMarkup);
+
+        await InsertAsync(message);
+    }
+
     /// <inheritdoc/>
     public async Task InsertAsync(Message? message)
     {
         if (message == null)
             return;
 
-        await messageService.InsertAsync(message.Chat.Id, message.MessageId);
+        var sender = (message.From?.IsBot ?? false) ? MessageSender.Bot : MessageSender.User;
+
+        await messageService.InsertAsync(message.Chat.Id, message.MessageId, sender);
     }
 
     /// <inheritdoc/>
@@ -26,13 +64,13 @@ public sealed class TelegramMessageService(
         if (chatId == null)
             return;
 
-        var messages = await messageService.GetAllUserMessages(chatId.Value);
+        var messages = await messageService.GetAllUserMessagesAsync(chatId.Value);
 
         foreach (var message in messages)
         {
             try
             {
-                await botClient.DeleteMessageAsync(message.ChatId, message.MessageId);
+                await client.DeleteMessageAsync(message.ChatId, message.MessageId);
             }
             catch (Exception ex)
             {
@@ -40,6 +78,6 @@ public sealed class TelegramMessageService(
             }
         }
 
-        await messageService.DeleteAllUserMessages(chatId.Value);
+        await messageService.DeleteAllUserMessagesAsync(chatId.Value);
     }
 }

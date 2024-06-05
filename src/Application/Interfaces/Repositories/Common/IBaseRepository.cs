@@ -47,7 +47,14 @@ public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     /// </summary>
     /// <param name="predicate">Условие выборки</param>
     /// <returns>Найденная запись.</returns>
-    Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity?> FindFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
+    /// <summary>
+    /// Поиск последней записи, удовлетворяющей условиям.
+    /// </summary>
+    /// <param name="predicate">Условие выборки</param>
+    /// <returns>Найденная запись.</returns>
+    Task<TEntity?> FindLastOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
     /// <summary>
     /// Поиск записей, удовлетворяющих условиям.

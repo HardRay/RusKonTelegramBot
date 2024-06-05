@@ -9,7 +9,7 @@ public sealed class KeyValueStorage(IUserStateRepository repository) : IKeyValue
 {
     public async ValueTask<T?> Get<T>(long userId, string key, T? defaultValue)
     {
-        var stateObject = await repository.FindOneAsync(x => x.Key == key && x.UserId == userId);
+        var stateObject = await repository.FindFirstOrDefaultAsync(x => x.Key == key && x.UserId == userId);
         if (stateObject == null)
         {
             return defaultValue;
@@ -22,7 +22,7 @@ public sealed class KeyValueStorage(IUserStateRepository repository) : IKeyValue
 
     public async ValueTask<object?> Get(long userId, string key, object? defaultValue)
     {
-        var stateObject = await repository.FindOneAsync(x => x.Key == key && x.UserId == userId);
+        var stateObject = await repository.FindFirstOrDefaultAsync(x => x.Key == key && x.UserId == userId);
         if (stateObject == null)
         {
             return defaultValue;

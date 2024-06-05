@@ -20,7 +20,7 @@ public sealed class AboutCompanyController(
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        //await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
     }
 
     [Action]
@@ -33,9 +33,9 @@ public sealed class AboutCompanyController(
         RowButton(SharedResource.SocialMediaButton, Q(ShowSocialMedia));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
+        await messageService.UpdateOrSendMessageAsync(Context.GetSafeChatId(), Message.Message, Message.Markup);
 
-        await messageService.InsertAsync(message);
+        ClearMessage();
     }
 
     [Action]

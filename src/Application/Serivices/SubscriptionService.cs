@@ -17,7 +17,7 @@ public sealed class SubscriptionService(
     {
         var entity = mapper.Map<Subscription>(subscription);
 
-        var oldSubscription = await repository.FindOneAsync(x => x.UserTelegramId == entity.UserTelegramId);
+        var oldSubscription = await repository.FindFirstOrDefaultAsync(x => x.UserTelegramId == entity.UserTelegramId);
         if (oldSubscription == null)
         {
             await repository.InsertOneAsync(entity);

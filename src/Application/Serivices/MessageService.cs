@@ -3,6 +3,7 @@ using Application.Interfaces.Services;
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Serivices;
 
@@ -10,7 +11,15 @@ namespace Application.Serivices;
 public sealed class MessageService(IMessageRepository repository, IMapper mapper) : IMessageService
 {
     /// <inheritdoc/>
-    public async Task<IEnumerable<MessageModel>> GetAllUserMessages(long chatId)
+    public async Task<MessageModel> GetLastUserMessageAsync(long chatId)
+    {
+        var message = await repository.FindLastOrDefaultAsync(x => x.ChatId == chatId);
+
+        return mapper.Map<MessageModel>(message);
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<MessageModel>> GetAllUserMessagesAsync(long chatId)
     {
         var messages = await repository.FindManyAsync(x => x.ChatId == chatId);
 
@@ -20,18 +29,19 @@ public sealed class MessageService(IMessageRepository repository, IMapper mapper
     }
 
     /// <inheritdoc/>
-    public async Task InsertAsync(long chatId, int messageId)
+    public async Task InsertAsync(long chatId, int messageId, MessageSender sender)
     {
         var message = new Message()
         {
             ChatId = chatId,
-            MessageId = messageId
+            MessageId = messageId,
+            Sender = sender,
         };
 
         await repository.InsertOneAsync(message);
     }
 
     /// <inheritdoc/>
-    public Task DeleteAllUserMessages(long chatId)
+    public Task DeleteAllUserMessagesAsync(long chatId)
         => repository.DeleteManyAsync(x => x.ChatId == chatId);
 }

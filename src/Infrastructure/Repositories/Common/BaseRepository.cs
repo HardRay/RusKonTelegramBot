@@ -62,11 +62,15 @@ public abstract class BaseRepository<TEntity>(IMongoCollectionProvider mongoColl
         => _collection.DeleteManyAsync(predicate);
 
     /// <inheritdoc/>
-    public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> predicate)
-    {
-        var cursor = await _collection.FindAsync(predicate);
+    public async Task<TEntity?> FindFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        => await _collection.Find(predicate).FirstOrDefaultAsync();
 
-        return await cursor.FirstOrDefaultAsync();
+    /// <inheritdoc/>
+    public async Task<TEntity?> FindLastOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        var sortBuilder = Builders<TEntity>.Sort.Descending(x => x.CreateDateTimeUtc);
+        
+        return await _collection.Find(predicate).Sort(sortBuilder).FirstOrDefaultAsync();
     }
 
     /// <inheritdoc/>

@@ -12,7 +12,7 @@ public sealed class UserService(IMapper mapper, IUserRepository repository) : IU
     /// <inheritdoc/>
     public async Task<UserModel> GetOrCreateUserByTelegramIdAsync(long telegramId)
     {
-        var user = await repository.FindOneAsync(x=>x.TelegramId == telegramId);
+        var user = await repository.FindFirstOrDefaultAsync(x=>x.TelegramId == telegramId);
 
         if (user == null)
         {

@@ -40,7 +40,7 @@ public sealed class VacancyService(
     /// <inheritdoc/>
     public async Task<VacancyModel?> GetVacancyById(string id)
     {
-        var vacancy = await repository.FindOneAsync(x => x.Id == id);
+        var vacancy = await repository.FindFirstOrDefaultAsync(x => x.Id == id);
 
         return mapper.Map<VacancyModel>(vacancy);
     }
@@ -68,13 +68,13 @@ public sealed class VacancyService(
     /// <inheritdoc/>
     public async Task<bool> ValidateCityAsync(string city)
     {
-        return await repository.FindOneAsync(x => x.City == city) != null;
+        return await repository.FindFirstOrDefaultAsync(x => x.City == city) != null;
     }
 
     /// <inheritdoc/>
     public async Task<bool> ValidateDirectionAsync(string direction)
     {
-        return await repository.FindOneAsync(x => x.Direction == direction) != null;
+        return await repository.FindFirstOrDefaultAsync(x => x.Direction == direction) != null;
     }
 
     private IEnumerable<Vacancy> GetVacanciesFromFileAsync(Stream stream)

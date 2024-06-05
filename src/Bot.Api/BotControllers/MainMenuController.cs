@@ -18,7 +18,7 @@ public sealed class MainMenuController(ITelegramMessageService messageService, I
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        //await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
     }
 
     [Action]
@@ -37,9 +37,9 @@ public sealed class MainMenuController(ITelegramMessageService messageService, I
             RowButton(SharedResource.AdminPanelButton, Q(ShowAdminPanel));
         }
 
-        var message = await Send();
+        await messageService.UpdateOrSendMessageAsync(Context.GetSafeChatId(), Message.Message, Message.Markup);
 
-        await messageService.InsertAsync(message);
+        ClearMessage();
     }
 
     [Action]
