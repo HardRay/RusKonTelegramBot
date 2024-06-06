@@ -1,12 +1,11 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
-using Bot.Api.Constants;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 using Microsoft.Extensions.Options;
-using OfficeOpenXml.Sorting;
 using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
@@ -19,20 +18,20 @@ public sealed class VacanciesController(
     IOptions<AppOptions> appOptions,
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BotControllerState<VacanciesState>
+    IUserService userService) : BaseController<VacanciesState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
-        await ShowVacancies();
+        await ShowVacanciesMessage();
     }
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
-    public async ValueTask ShowVacancies()
+    public async ValueTask ShowVacanciesMessage()
     {
         var userTelegramId = Context.GetSafeChatId();
         if (userTelegramId == null)
@@ -42,7 +41,7 @@ public sealed class VacanciesController(
 
         if (!vacancies.Any())
         {
-            await ShowNotFoundVacanciesMessage();
+            await ShowNotFoundVacancies();
             return;
         }
 
@@ -56,12 +55,10 @@ public sealed class VacanciesController(
             PushL();
         }
 
-        RowButton(SharedResource.NoSuitableVacancyButton, Q(ShowNotFoundVacanciesMessage));
+        RowButton(SharedResource.NoSuitableVacancyButton, Q(ShowNotFoundVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
-
-        await messageService.InsertAsync(message);
+        await SendMessage();
     }
 
     [On(Handle.Unknown)]
@@ -82,7 +79,7 @@ public sealed class VacanciesController(
         if (commandParts.Length != 2)
             return;
 
-        await messageService.InsertAsync(message);
+        await _messageService.InsertAsync(message);
 
         var vacancyId = commandParts.Last();
         await ShowVacancy(vacancyId);
@@ -105,7 +102,7 @@ public sealed class VacanciesController(
             return;
         }
 
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
 
         var vacancyDescription = await GetVacancyDescription(vacancy);
         PushLL(vacancyDescription);
@@ -115,17 +112,17 @@ public sealed class VacanciesController(
         RowButton(SharedResource.BackButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await messageService.InsertAsync(await Send());
+        await SendMessage();
     }
 
     private async ValueTask ShowWrongVacancyIdMessage()
     {
         PushL(SharedResource.WrongVacancyId);
         RowButton(SharedResource.BackButton, Q(ShowVacancies));
-        await messageService.InsertAsync(await Send());
+        await SendMessage();
     }
 
-    private ValueTask<string> GetVacancyDescription(VacancyModel vacancy)
+    private static ValueTask<string> GetVacancyDescription(VacancyModel vacancy)
     {
         var stringBuilder = new StringBuilder();
         stringBuilder.Append($"<b>{vacancy.Name}</b>");
@@ -153,7 +150,7 @@ public sealed class VacanciesController(
 
         PushL(SharedResource.SuccessApplyVacancyText);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
-        await messageService.InsertAsync(await Send());
+        await SendMessage();
     }
 
     private async ValueTask SendRequestToHr(string vacancyId)
@@ -186,40 +183,5 @@ public sealed class VacanciesController(
 
         var messageText = string.Format(SharedResource.NewRequestText, userName, vacancyDescription);
         await Client.SendTextMessageAsync(appOptions.Value.TelegramHRChatId, messageText, ParseMode.Html);
-    }
-
-    [Action]
-    public async ValueTask ShowNotFoundVacanciesMessage()
-    {
-        await GlobalState(new NotFoundVacanciesState());
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            await GlobalState(new VacanciesState());
-        }
-        Context.StopHandling();
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await ShowVacancies();
     }
 }

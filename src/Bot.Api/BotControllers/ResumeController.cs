@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces.Services;
-using Bot.Api.Constants;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -16,7 +16,7 @@ public sealed record ResumeState;
 public class ResumeController(
     ITelegramMessageService messageService,
     IUserService userService,
-    IOptions<AppOptions> appOptions) : BotControllerState<ResumeState>
+    IOptions<AppOptions> appOptions) : BaseController<ResumeState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
@@ -25,17 +25,17 @@ public class ResumeController(
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
     public async ValueTask ShowStartMessage()
     {
         PushL(SharedResource.ResumeStartMessage);
-        RowButton(SharedResource.BackButton, Q(ShowNotFoundVacanciesMessage));
+        RowButton(SharedResource.BackButton, Q(ShowNotFoundVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await messageService.InsertAsync(await Send());
+        await SendMessage();
     }
 
     [On(Handle.Unknown)]
@@ -48,14 +48,14 @@ public class ResumeController(
             return;
         }
         Context.StopHandling();
-        await messageService.InsertAsync(message);
+        await _messageService.InsertAsync(message);
 
         await SendResumeToHr();
 
         PushL(SharedResource.AcceptedResumeMessage);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await messageService.InsertAsync(await Send());
+        await SendMessage();
     }
 
     private async ValueTask SendResumeToHr()
@@ -85,40 +85,5 @@ public class ResumeController(
         await Client.SendTextMessageAsync(appOptions.Value.TelegramHRChatId, messageText, ParseMode.Html);
 
         await Client.ForwardMessageAsync(appOptions.Value.TelegramHRChatId, chatId, messageId.Value);
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [Action]
-    public async ValueTask ShowNotFoundVacanciesMessage()
-    {
-        await GlobalState(new NotFoundVacanciesState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
     }
 }

@@ -28,8 +28,6 @@ public sealed class StartController(
         user.LastName = Context.Update.Message?.From?.LastName;
         await userService.UpdateUserAsync(user);
 
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
-
         await GlobalState(new MainMenuState());
     }
 

@@ -23,8 +23,8 @@ public interface ITelegramMessageService
     Task InsertAsync(Message? message);
 
     /// <summary>
-    /// Удаление всех сообщений пользователя
+    /// Удаление всех сообщений пользователя, кроме последнего
     /// </summary>
     /// <param name="chatId">Идентификатор чата в Telegram</param>
-    Task DeleteAllUserMessages(long? chatId);
+    Task DeleteAllUserMessagesExceptLastAsync(long? chatId);
 }

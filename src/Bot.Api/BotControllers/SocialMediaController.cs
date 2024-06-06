@@ -1,4 +1,4 @@
-﻿using Bot.Api.Constants;
+﻿using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -11,20 +11,20 @@ public sealed record SocialMediaState;
 
 public sealed class SocialMediaController(
     IOptions<AppOptions> appOptions,
-    ITelegramMessageService messageService) : BotControllerState<SocialMediaState>
+    ITelegramMessageService messageService) : BaseController<SocialMediaState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
-        await ShowSocialMedia();
+        await ShowSocialMediaMessage();
     }
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
-    public async ValueTask ShowSocialMedia()
+    public async ValueTask ShowSocialMediaMessage()
     {
         PushL(SharedResource.SocialMediaText);
 
@@ -32,37 +32,6 @@ public sealed class SocialMediaController(
         RowButton(SharedResource.VKGroupButton, appOptions.Value.VKGroupUrl);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
-
-        await messageService.InsertAsync(message);
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
+        await SendMessage();
     }
 }

@@ -1,4 +1,4 @@
-﻿using Bot.Api.Constants;
+﻿using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -9,27 +9,29 @@ namespace Bot.Api.BotControllers;
 
 public sealed record MainMenuState;
 
-public sealed class MainMenuController(ITelegramMessageService messageService, IOptions<AppOptions> appOptions) : BotControllerState<MainMenuState>
+public sealed class MainMenuController(
+    ITelegramMessageService messageService,
+    IOptions<AppOptions> appOptions) : BaseController<MainMenuState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
-        await ShowMainMenu();
+        await ShowMainMenuMessage();
     }
 
     public override async ValueTask OnLeave()
     {
-        //await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
-    public async ValueTask ShowMainMenu()
+    public async ValueTask ShowMainMenuMessage()
     {
         var userId = Context.GetSafeChatId();
 
         PushL(SharedResource.MainMenuGreetings);
 
         RowButton(SharedResource.AboutCompanyButton, Q(ShowAboutCompany));
-        RowButton(SharedResource.VacanciesButton, Q(ShowVacancies));
+        RowButton(SharedResource.VacanciesButton, Q(ShowCities));
         RowButton(SharedResource.ContactWithHRButton, Q(ContactWithHR));
 
         if (userId == appOptions.Value.AdminTelegramId)
@@ -37,55 +39,6 @@ public sealed class MainMenuController(ITelegramMessageService messageService, I
             RowButton(SharedResource.AdminPanelButton, Q(ShowAdminPanel));
         }
 
-        await messageService.UpdateOrSendMessageAsync(Context.GetSafeChatId(), Message.Message, Message.Markup);
-
-        ClearMessage();
-    }
-
-    [Action]
-    public async ValueTask ShowAboutCompany()
-    {
-        await GlobalState(new AboutCompanyState());
-    }
-
-    [Action]
-    public async ValueTask ShowVacancies()
-    {
-        await GlobalState(new CityState());
-    }
-
-    [Action]
-    public async ValueTask ContactWithHR()
-    {
-        await GlobalState(new HRState());
-    }
-
-    [Action]
-    public async ValueTask ShowAdminPanel()
-    {
-        await GlobalState(new AdminPanelState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await ShowMainMenu();
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
+        await SendMessage();
     }
 }

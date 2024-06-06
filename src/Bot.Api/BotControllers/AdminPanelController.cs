@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Constants;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -14,32 +15,25 @@ public sealed class AdminPanelController(
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
     ISubscriptionService subscriptionService,
-    ILogger<AdminPanelController> logger) : BotControllerState<AdminPanelState>
+    ILogger<AdminPanelController> logger) : BaseController<AdminPanelState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
-        await ShowAdminPanel();
+        await ShowAdminPanelMessage();
     }
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
-    public async ValueTask ShowAdminPanel()
+    public async ValueTask ShowAdminPanelMessage()
     {
         PushL(SharedResource.AdminPanelText);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
-        await messageService.InsertAsync(message);
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
+        await SendMessage();
     }
 
     [On(Handle.Unknown)]
@@ -48,7 +42,7 @@ public sealed class AdminPanelController(
     public async ValueTask OnDocumentReceived()
     {
         var receivedMessage = Context.Update.Message;
-        await messageService.InsertAsync(receivedMessage);
+        await _messageService.InsertAsync(receivedMessage);
 
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
@@ -60,7 +54,7 @@ public sealed class AdminPanelController(
         if (string.IsNullOrEmpty(documentExt) || !excelExtentions.Contains(documentExt))
         {
             PushL(SharedResource.InvalidDocumentExtentions);
-            await messageService.InsertAsync(await Send());
+            await SendMessage();
             return;
         }
 
@@ -76,7 +70,7 @@ public sealed class AdminPanelController(
             logger.LogError(ex, SharedResource.ErrorDocumentUploading);
 
             PushL(SharedResource.ErrorDocumentUploading);
-            await messageService.InsertAsync(await Send());
+            await SendMessage();
             return;
         }
 
@@ -84,30 +78,7 @@ public sealed class AdminPanelController(
 
         PushL(SharedResource.SuccessDocumentUploading);
 
-        await messageService.InsertAsync(await Send());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async ValueTask Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
+        await SendMessage();
     }
 
     private async ValueTask NotifySubscribersAboutNewVacancies()
@@ -123,7 +94,7 @@ public sealed class AdminPanelController(
             var markup = new InlineKeyboardMarkup(keyboardButton);
             var message = await Client.SendTextMessageAsync(subscription.UserTelegramId, SharedResource.NewVacanciesMessage, replyMarkup: markup);
 
-            await messageService.InsertAsync(message);
+            await _messageService.InsertAsync(message);
         }
     }
 }

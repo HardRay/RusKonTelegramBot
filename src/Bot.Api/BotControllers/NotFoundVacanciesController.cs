@@ -1,10 +1,9 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
-using Bot.Api.Constants;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
-using Domain.Entities;
 
 namespace Bot.Api.BotControllers;
 
@@ -13,7 +12,7 @@ public sealed record NotFoundVacanciesState;
 public sealed class NotFoundVacanciesController(
     ITelegramMessageService messageService,
     IUserService userService,
-    ISubscriptionService subscriptionService) : BotControllerState<NotFoundVacanciesState>
+    ISubscriptionService subscriptionService) : BaseController<NotFoundVacanciesState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
@@ -22,7 +21,7 @@ public sealed class NotFoundVacanciesController(
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
@@ -34,7 +33,7 @@ public sealed class NotFoundVacanciesController(
         RowButton(SharedResource.LeaveResumeButton, Q(LeaveResume));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await messageService.InsertAsync(await Send());
+        await SendMessage();
     }
 
     [Action]
@@ -54,41 +53,6 @@ public sealed class NotFoundVacanciesController(
 
         PushL(SharedResource.SuccessSubscribtionToNotification);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
-        await messageService.InsertAsync(await Send());
-    }
-
-    [Action]
-    public async ValueTask LeaveResume()
-    {
-        await GlobalState(new ResumeState());
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
+        await SendMessage();
     }
 }

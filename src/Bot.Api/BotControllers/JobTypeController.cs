@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces.Services;
-using Bot.Api.Constants;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
@@ -11,26 +11,25 @@ public sealed record JobTypeState;
 public sealed class JobTypeController(
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BotControllerState<JobTypeState>
+    IUserService userService) : BaseController<JobTypeState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
         var typesExists = await TypesExist();
 
         if (typesExists)
-            await ShowStartScreen();
+            await ShowJobTypeChoosingMessage();
         else
             await ShowDirections();
-
     }
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
-    public async ValueTask ShowStartScreen()
+    public async ValueTask ShowJobTypeChoosingMessage()
     {
         var types = await GetJobTypes();
 
@@ -43,9 +42,7 @@ public sealed class JobTypeController(
         RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
-
-        await messageService.InsertAsync(message);
+        await SendMessage();
     }
 
     [Action]
@@ -56,47 +53,6 @@ public sealed class JobTypeController(
         await userService.UpdateUserAsync(user);
 
         await ShowDirections();
-    }
-
-    [Action]
-    public async ValueTask ShowDirections()
-    {
-        await GlobalState(new DirectionState());
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [Action]
-    public async ValueTask ShowVacancies()
-    {
-        await GlobalState(new VacanciesState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
     }
 
     private async Task<bool> TypesExist()

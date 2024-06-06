@@ -1,4 +1,4 @@
-﻿using Bot.Api.Constants;
+﻿using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -11,20 +11,21 @@ public sealed record AboutCompanyState;
 
 public sealed class AboutCompanyController(
     IOptions<AppOptions> appOptions,
-    ITelegramMessageService messageService) : BotControllerState<AboutCompanyState>
+    ITelegramMessageService messageService) : BaseController<AboutCompanyState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
-        await ShowAboutCompany();
+        await ShowAboutCompanyMessage();
     }
 
     public override async ValueTask OnLeave()
     {
-        //await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
+
     [Action]
-    public async ValueTask ShowAboutCompany()
+    public async ValueTask ShowAboutCompanyMessage()
     {
         PushL(SharedResource.AboutCompanyText);
 
@@ -33,43 +34,12 @@ public sealed class AboutCompanyController(
         RowButton(SharedResource.SocialMediaButton, Q(ShowSocialMedia));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await messageService.UpdateOrSendMessageAsync(Context.GetSafeChatId(), Message.Message, Message.Markup);
-
-        ClearMessage();
+        await SendMessage();
     }
 
     [Action]
-    public async ValueTask ShowSocialMedia()
+    public ValueTask EmptyAction()
     {
-        await GlobalState(new SocialMediaState());
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
+        return ValueTask.CompletedTask;
     }
 }

@@ -44,4 +44,8 @@ public sealed class MessageService(IMessageRepository repository, IMapper mapper
     /// <inheritdoc/>
     public Task DeleteAllUserMessagesAsync(long chatId)
         => repository.DeleteManyAsync(x => x.ChatId == chatId);
+
+    /// <inheritdoc/>
+    public Task DeleteMessagesByIdsAsync(IEnumerable<int> ids)
+        => repository.DeleteManyAsync(x => ids.Contains(x.MessageId));
 }

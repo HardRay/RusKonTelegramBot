@@ -59,12 +59,17 @@ public sealed class TelegramMessageService(
     }
 
     /// <inheritdoc/>
-    public async Task DeleteAllUserMessages(long? chatId)
+    public async Task DeleteAllUserMessagesExceptLastAsync(long? chatId)
     {
         if (chatId == null)
             return;
 
         var messages = await messageService.GetAllUserMessagesAsync(chatId.Value);
+        if (!messages.Any())
+            return;
+        messages = messages.OrderBy(x => x.CreateDateTimeUtc);
+        int allButLastCount = messages.Count() - 1;
+        messages = messages.Take(allButLastCount);
 
         foreach (var message in messages)
         {
@@ -78,6 +83,7 @@ public sealed class TelegramMessageService(
             }
         }
 
-        await messageService.DeleteAllUserMessagesAsync(chatId.Value);
+        var messageIds = messages.Select(x => x.MessageId);
+        await messageService.DeleteMessagesByIdsAsync(messageIds);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Bot.Api.Constants;
+﻿using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -13,7 +13,7 @@ public sealed record HRState;
 public sealed class HRController(
     IOptions<AppOptions> appOptions,
     ITelegramMessageService messageService,
-    ITelegramBotClient botClient) : BotControllerState<HRState>
+    ITelegramBotClient botClient) : BaseController<HRState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
@@ -22,7 +22,7 @@ public sealed class HRController(
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
@@ -34,9 +34,7 @@ public sealed class HRController(
         RowButton(SharedResource.HRChatButton, appOptions.Value.TelegramHRChat);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
-
-        await messageService.InsertAsync(message);
+        await SendMessage();
     }
 
     [Action]
@@ -44,36 +42,6 @@ public sealed class HRController(
     {
         var message = await botClient.SendContactAsync(Context.GetSafeChatId()!, appOptions.Value.HRPhone, "HR");
 
-        await messageService.InsertAsync(message);
-    }
-
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
-    }
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
+        await _messageService.InsertAsync(message);
     }
 }

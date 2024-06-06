@@ -35,4 +35,10 @@ public interface IMessageService
     /// </summary>
     /// <param name="chatId">Идентификатор чата в Telegram</param>
     Task DeleteAllUserMessagesAsync(long chatId);
+
+    /// <summary>
+    /// Удаление сообщений по идентификаторам
+    /// </summary>
+    /// <param name="ids">Идентификаторы сообщений</param>
+    Task DeleteMessagesByIdsAsync(IEnumerable<int> ids);
 }

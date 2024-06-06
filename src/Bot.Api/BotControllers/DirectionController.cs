@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Constants;
 using Bot.Api.Helpers;
 using Bot.Api.Resources;
@@ -14,25 +15,25 @@ public sealed record DirectionState;
 public sealed class DirectionController(
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BotControllerState<DirectionState>
+    IUserService userService) : BaseController<DirectionState>(messageService)
 {
     public override async ValueTask OnEnter()
     {
         var directionsExist = await DirectionExist();
 
         if (directionsExist)
-            await ShowStartScreen();
+            await ShowDirectionChoosingMessage();
         else
             await ShowVacancies();
     }
 
     public override async ValueTask OnLeave()
     {
-        await messageService.DeleteAllUserMessages(Context.GetSafeChatId());
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     [Action]
-    public async ValueTask ShowStartScreen()
+    public async ValueTask ShowDirectionChoosingMessage()
     {
         PushL(SharedResource.JobTypeStartMessage);
 
@@ -41,21 +42,7 @@ public sealed class DirectionController(
         RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
-        var message = await Send();
-
-        await messageService.InsertAsync(message);
-    }
-
-    [Action]
-    public async ValueTask ShowVacancies()
-    {
-        await GlobalState(new VacanciesState());
-    }
-
-    [Action]
-    public async ValueTask ShowMainMenu()
-    {
-        await GlobalState(new MainMenuState());
+        await SendMessage();
     }
 
     [On(Handle.Unknown)]
@@ -92,7 +79,7 @@ public sealed class DirectionController(
 
         Context.StopHandling();
 
-        await messageService.InsertAsync(message);
+        await _messageService.InsertAsync(message);
 
         var direction = message.Text!;
 
@@ -101,7 +88,7 @@ public sealed class DirectionController(
         if (!isValid)
         {
             PushL(SharedResource.WrongDirectionText);
-            await messageService.InsertAsync(await Send());
+            await SendMessage();
             return;
         }
 
@@ -110,30 +97,6 @@ public sealed class DirectionController(
         await userService.UpdateUserAsync(user);
 
         await ShowVacancies();
-    }
-
-
-    [Action("Start")]
-    [Action("/start", "Показать меню")]
-    [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
-    {
-        await messageService.InsertAsync(Context.Update.Message);
-
-        await GlobalState(new MainMenuState());
-    }
-
-    [On(Handle.Unknown)]
-    [Filter(Filters.CurrentGlobalState)]
-    [Filter(And: Filters.CallbackQuery)]
-    public async Task UnknownCallback()
-    {
-        var callbackQuery = Context.GetCallbackQuery();
-        if (!string.IsNullOrWhiteSpace(callbackQuery.Data) && callbackQuery.Data == BotConstants.ShowNewVacanciesCallbackData)
-        {
-            Context.StopHandling();
-            await GlobalState(new VacanciesState());
-        }
     }
 
     private async Task<bool> DirectionExist()
