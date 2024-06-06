@@ -5,6 +5,7 @@ using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
 using Microsoft.Extensions.Options;
+using Telegram.Bot;
 
 namespace Bot.Api.BotControllers;
 
@@ -29,19 +30,37 @@ public sealed class AboutCompanyController(
     [Action]
     public async ValueTask ShowAboutCompanyMessage()
     {
-        PushL(SharedResource.AboutCompanyText);
-
-        RowButton(SharedResource.CompanyVideoButton, appOptions.Value.CompanyVideoUrl);
-        RowButton(SharedResource.CompanyWebsiteButton, appOptions.Value.CompanyWebsiteUrl);
-        RowButton(SharedResource.SocialMediaButton, Q(ShowSocialMedia));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        PushL(SharedResource.AboutCompanyShortText);
+        ShowButtons();
 
         await SendMessage();
     }
 
-    [Action]
-    public ValueTask EmptyAction()
+    [On(Handle.Unknown)]
+    [Filter(Filters.Text)]
+    [Filter(And: Filters.CurrentGlobalState)]
+    private async Task UnknownText()
     {
-        return ValueTask.CompletedTask;
+        var message = Context.Update.Message;
+        if (message == null || message.Text == null || message.Text != "/more")
+        {
+            return;
+        }
+        Context.StopHandling();
+
+        await Client.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+
+        PushL(SharedResource.AboutCompanyFullText);
+        ShowButtons();
+
+        await SendMessage();
+    }
+
+    private void ShowButtons()
+    {
+        RowButton(SharedResource.CompanyVideoButton, appOptions.Value.CompanyVideoUrl);
+        RowButton(SharedResource.CompanyWebsiteButton, appOptions.Value.CompanyWebsiteUrl);
+        RowButton(SharedResource.SocialMediaButton, Q(ShowSocialMedia));
+        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
     }
 }
