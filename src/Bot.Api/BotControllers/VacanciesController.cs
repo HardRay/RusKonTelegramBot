@@ -31,7 +31,7 @@ public sealed class VacanciesController(
     }
 
     [Action]
-    public async ValueTask ShowVacanciesMessage()
+    public async ValueTask ShowVacanciesMessage(int page = 1)
     {
         var userTelegramId = Context.GetSafeChatId();
         if (userTelegramId == null)
@@ -45,15 +45,7 @@ public sealed class VacanciesController(
             return;
         }
 
-        foreach(var vacancy in vacancies)
-        {
-            PushL($"<b>{vacancy.Name}</b>");
-            if (!string.IsNullOrEmpty(vacancy.Salary))
-                PushL(vacancy.Salary);
-            PushL($"Подробнее: /vacancy_{vacancy.Id}");
-            
-            PushL();
-        }
+        ShowVacanciesWithPagination(vacancies, page);
 
         RowButton(SharedResource.NoSuitableVacancyButton, Q(ShowNotFoundVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
@@ -151,6 +143,40 @@ public sealed class VacanciesController(
         PushL(SharedResource.SuccessApplyVacancyText);
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
         await SendMessage();
+    }
+
+    [Action]
+    public ValueTask EmptyAction()
+    {
+        return ValueTask.CompletedTask;
+    }
+
+    private void ShowVacanciesWithPagination(IEnumerable<VacancyModel> vacancies, int page = 1)
+    {
+        const int vacanciesOnPage = 5;
+
+        var maxPage = (int)Math.Ceiling(vacancies.Count() / (double)vacanciesOnPage);
+
+        var filteredVacancies = vacancies
+            .Skip((page - 1) * vacanciesOnPage)
+            .Take(vacanciesOnPage);
+
+        foreach (var vacancy in filteredVacancies)
+        {
+            PushL($"<b>{vacancy.Name}</b>");
+            if (!string.IsNullOrEmpty(vacancy.Salary))
+                PushL(vacancy.Salary);
+            PushL($"Подробнее: /vacancy_{vacancy.Id}");
+
+            PushL();
+        }
+
+        if (page > 1)
+            Button("\u2190 Назад", Q(ShowVacanciesMessage, page - 1));
+        if (maxPage > 1)
+            Button($"{page}/{maxPage}", Q(EmptyAction));
+        if (page < maxPage)
+            Button("Вперёд \u2192", Q(ShowVacanciesMessage, page + 1));
     }
 
     private async ValueTask SendRequestToHr(string vacancyId)
