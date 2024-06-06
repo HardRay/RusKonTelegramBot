@@ -1,4 +1,5 @@
-﻿using Bot.Api.BotControllers.Common;
+﻿using Application.Interfaces.Services;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -12,8 +13,9 @@ public sealed record HRState;
 
 public sealed class HRController(
     IOptions<AppOptions> appOptions,
+    IUserService userService,
     ITelegramMessageService messageService,
-    ITelegramBotClient botClient) : BaseController<HRState>(messageService)
+    ITelegramBotClient botClient) : BaseController<HRState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {

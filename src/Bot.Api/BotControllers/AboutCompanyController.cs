@@ -1,4 +1,5 @@
-﻿using Bot.Api.BotControllers.Common;
+﻿using Application.Interfaces.Services;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -11,7 +12,8 @@ public sealed record AboutCompanyState;
 
 public sealed class AboutCompanyController(
     IOptions<AppOptions> appOptions,
-    ITelegramMessageService messageService) : BaseController<AboutCompanyState>(messageService)
+    IUserService userService,
+    ITelegramMessageService messageService) : BaseController<AboutCompanyState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {

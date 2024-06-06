@@ -14,7 +14,7 @@ public sealed record CityState;
 public sealed class CityController(
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BaseController<CityState>(messageService)
+    IUserService userService) : BaseController<CityState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
@@ -87,10 +87,10 @@ public sealed class CityController(
             return;
         }
 
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
         user.VacancyFilter.City = city;
         user.VacancyFilter.IsOnline = false;
-        await userService.UpdateUserAsync(user);
+        await _userService.UpdateUserAsync(user);
 
         await ShowJobTypes();
     }
@@ -98,18 +98,10 @@ public sealed class CityController(
     [Action]
     public async ValueTask ShowOnlineJobs()
     {
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
         user.VacancyFilter.IsOnline = true;
-        await userService.UpdateUserAsync(user);
+        await _userService.UpdateUserAsync(user);
 
         await GlobalState(new VacanciesState());
-    }
-
-    private async Task ClearVacancyFilter()
-    {
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
-
-        user.VacancyFilter = new();
-        await userService.UpdateUserAsync(user);
     }
 }

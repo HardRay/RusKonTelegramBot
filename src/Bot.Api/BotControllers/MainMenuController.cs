@@ -1,4 +1,5 @@
-﻿using Bot.Api.BotControllers.Common;
+﻿using Application.Interfaces.Services;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -11,7 +12,8 @@ public sealed record MainMenuState;
 
 public sealed class MainMenuController(
     ITelegramMessageService messageService,
-    IOptions<AppOptions> appOptions) : BaseController<MainMenuState>(messageService)
+    IUserService userService,
+    IOptions<AppOptions> appOptions) : BaseController<MainMenuState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {

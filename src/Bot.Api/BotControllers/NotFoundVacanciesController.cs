@@ -12,7 +12,7 @@ public sealed record NotFoundVacanciesState;
 public sealed class NotFoundVacanciesController(
     ITelegramMessageService messageService,
     IUserService userService,
-    ISubscriptionService subscriptionService) : BaseController<NotFoundVacanciesState>(messageService)
+    ISubscriptionService subscriptionService) : BaseController<NotFoundVacanciesState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
@@ -42,7 +42,7 @@ public sealed class NotFoundVacanciesController(
         var userId = Context.GetSafeChatId();
         if (userId == null)
             return;
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(userId.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(userId.Value);
 
         var subscription = new SubscriptionModel()
         {

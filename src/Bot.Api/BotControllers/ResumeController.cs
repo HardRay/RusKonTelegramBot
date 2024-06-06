@@ -16,7 +16,7 @@ public sealed record ResumeState;
 public class ResumeController(
     ITelegramMessageService messageService,
     IUserService userService,
-    IOptions<AppOptions> appOptions) : BaseController<ResumeState>(messageService)
+    IOptions<AppOptions> appOptions) : BaseController<ResumeState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
@@ -68,7 +68,7 @@ public class ResumeController(
         if (messageId == null)
             return;
 
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(chatId.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(chatId.Value);
         var firstName = user.FirstName;
         var lastName = user.LastName;
 

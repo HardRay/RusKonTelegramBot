@@ -1,4 +1,5 @@
-﻿using Bot.Api.BotControllers.Common;
+﻿using Application.Interfaces.Services;
+using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -11,7 +12,8 @@ public sealed record SocialMediaState;
 
 public sealed class SocialMediaController(
     IOptions<AppOptions> appOptions,
-    ITelegramMessageService messageService) : BaseController<SocialMediaState>(messageService)
+    IUserService userService,
+    ITelegramMessageService messageService) : BaseController<SocialMediaState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {

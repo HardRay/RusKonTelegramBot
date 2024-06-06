@@ -18,7 +18,7 @@ public sealed class VacanciesController(
     IOptions<AppOptions> appOptions,
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BaseController<VacanciesState>(messageService)
+    IUserService userService) : BaseController<VacanciesState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
@@ -166,7 +166,7 @@ public sealed class VacanciesController(
         if (chatId == null)
             return;
 
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(chatId.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(chatId.Value);
         var firstName = user.FirstName;
         var lastName = user.LastName;
 

@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces.Services;
 using Bot.Api.BotControllers.Common;
-using Bot.Api.Constants;
 using Bot.Api.Helpers;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -15,7 +14,7 @@ public sealed record DirectionState;
 public sealed class DirectionController(
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BaseController<DirectionState>(messageService)
+    IUserService userService) : BaseController<DirectionState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
@@ -92,9 +91,9 @@ public sealed class DirectionController(
             return;
         }
 
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
         user.VacancyFilter.Direction = direction;
-        await userService.UpdateUserAsync(user);
+        await _userService.UpdateUserAsync(user);
 
         await ShowVacancies();
     }

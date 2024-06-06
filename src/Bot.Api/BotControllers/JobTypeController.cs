@@ -11,7 +11,7 @@ public sealed record JobTypeState;
 public sealed class JobTypeController(
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
-    IUserService userService) : BaseController<JobTypeState>(messageService)
+    IUserService userService) : BaseController<JobTypeState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
@@ -48,9 +48,9 @@ public sealed class JobTypeController(
     [Action]
     public async ValueTask ChooseJobType(string jobType)
     {
-        var user = await userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
         user.VacancyFilter.Type = jobType;
-        await userService.UpdateUserAsync(user);
+        await _userService.UpdateUserAsync(user);
 
         await ShowDirections();
     }

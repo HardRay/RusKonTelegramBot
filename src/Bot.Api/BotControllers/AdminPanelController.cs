@@ -12,10 +12,11 @@ namespace Bot.Api.BotControllers;
 public sealed record AdminPanelState;
 
 public sealed class AdminPanelController(
+    IUserService userService,
     ITelegramMessageService messageService,
     IVacancyService vacancyService,
     ISubscriptionService subscriptionService,
-    ILogger<AdminPanelController> logger) : BaseController<AdminPanelState>(messageService)
+    ILogger<AdminPanelController> logger) : BaseController<AdminPanelState>(messageService, userService)
 {
     public override async ValueTask OnEnter()
     {
