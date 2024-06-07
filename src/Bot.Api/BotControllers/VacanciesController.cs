@@ -120,7 +120,8 @@ public sealed class VacanciesController(
         stringBuilder.Append($"<b>{vacancy.Name}</b>");
         if (!string.IsNullOrEmpty(vacancy.City))
             stringBuilder.Append($"{Environment.NewLine}Город: {vacancy.City}");
-        stringBuilder.Append($"{Environment.NewLine}Формат: {vacancy.FormatString}");
+        if (!string.IsNullOrEmpty(vacancy.FormatString))
+            stringBuilder.Append($"{Environment.NewLine}Формат: {vacancy.FormatString}");
         if (!string.IsNullOrEmpty(vacancy.Type))
             stringBuilder.Append($"{Environment.NewLine}Тип: {vacancy.Type}");
         if (!string.IsNullOrEmpty(vacancy.Salary))
