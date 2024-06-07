@@ -242,6 +242,15 @@ namespace Bot.Api.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Работа для студентов.
+        /// </summary>
+        public static string JobForStudentsButton {
+            get {
+                return ResourceManager.GetString("JobForStudentsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Хорошо, разобрались с городом и форматом работы, теперь подскажи, где ты хочешь работать?.
         /// </summary>
         public static string JobTypeStartMessage {

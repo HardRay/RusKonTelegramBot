@@ -3,6 +3,7 @@ using Application.Interfaces.Services;
 using Application.Models;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Models;
 using OfficeOpenXml;
 
@@ -29,10 +30,11 @@ public sealed class VacancyService(
         var filter = user.VacancyFilter;
 
         var vacancies = await repository.FindManyAsync(x =>
-            (filter.IsOnline == null || x.IsOnline == filter.IsOnline) &&
+            (filter.Format == null || x.Format == null || x.Format == JobFormat.Hybrid || x.Format == filter.Format) &&
             (filter.City == null || x.City == filter.City) &&
             (filter.Type == null || x.Type == filter.Type) &&
-            (filter.Direction == null || x.Direction == filter.Direction));
+            (filter.Direction == null || x.Direction == filter.Direction) &&
+            (filter.ForStudents == x.ForStudents));
 
         return mapper.Map<IEnumerable<VacancyModel>>(vacancies);
     }
@@ -77,7 +79,7 @@ public sealed class VacancyService(
         return await repository.FindFirstOrDefaultAsync(x => x.Direction == direction) != null;
     }
 
-    private IEnumerable<Vacancy> GetVacanciesFromFileAsync(Stream stream)
+    private static IEnumerable<Vacancy> GetVacanciesFromFileAsync(Stream stream)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -92,7 +94,7 @@ public sealed class VacancyService(
         while (cells[row, 1].Value != null)
         {
             var additionalAttributes = new List<AdditionalAtribute>();
-            const int additionalAttributesStartColumn = 7;
+            const int additionalAttributesStartColumn = 8;
             var attributeColumn = additionalAttributesStartColumn;
             var attributeName = cells[1, attributeColumn]?.Value?.ToString()?.Trim();
 
@@ -116,11 +118,11 @@ public sealed class VacancyService(
             {
                 Name = cells[row, 1].Value.ToString()!.Trim(),
                 City = cells[row, 2].Value?.ToString()?.Trim(),
-                Format = cells[row, 3].Value?.ToString()?.Trim(),
-                IsOnline = cells[row, 3].Value?.ToString()?.Trim() == "Онлайн",
+                Format = GetJobFormat(cells[row, 3].Value?.ToString()?.Trim()),
                 Type = cells[row, 4].Value?.ToString()?.Trim(),
                 Direction = cells[row, 5].Value?.ToString()?.Trim(),
                 Salary = cells[row, 6].Value?.ToString()?.Trim(),
+                ForStudents = cells[row, 7].Value?.ToString()?.Trim() == "Да",
                 AdditionalAtributes = additionalAttributes
             });
 
@@ -129,4 +131,13 @@ public sealed class VacancyService(
 
         return vacancies;
     }
+
+    private static JobFormat? GetJobFormat(string? str)
+        => str switch
+        {
+            "Оффлайн" => JobFormat.Offline,
+            "Онлайн" => JobFormat.Online,
+            "Гибрид" => JobFormat.Hybrid,
+            _ => null
+        };
 }

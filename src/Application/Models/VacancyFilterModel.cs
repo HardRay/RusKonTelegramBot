@@ -1,4 +1,6 @@
-﻿namespace Application.Models;
+﻿using Domain.Enums;
+
+namespace Application.Models;
 
 /// <summary>
 /// Параметры поиска вакансии пользователя
@@ -11,9 +13,9 @@ public sealed class VacancyFilterModel
     public string? City { get; set; }
 
     /// <summary>
-    /// Онлайн
+    /// Формат
     /// </summary>
-    public bool? IsOnline { get; set; }
+    public JobFormat? Format { get; set; }
 
     /// <summary>
     /// Тип
@@ -24,4 +26,9 @@ public sealed class VacancyFilterModel
     /// Направление
     /// </summary>
     public string? Direction { get; set; }
+
+    /// <summary>
+    /// Для студентов
+    /// </summary>
+    public bool ForStudents { get; set; } = false;
 }

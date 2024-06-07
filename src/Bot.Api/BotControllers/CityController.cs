@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Helpers;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
+using Domain.Enums;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -89,7 +91,7 @@ public sealed class CityController(
 
         var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
         user.VacancyFilter.City = city;
-        user.VacancyFilter.IsOnline = false;
+        user.VacancyFilter.Format = JobFormat.Offline;
         await _userService.UpdateUserAsync(user);
 
         await ShowJobTypes();
@@ -99,7 +101,10 @@ public sealed class CityController(
     public async ValueTask ShowOnlineJobs()
     {
         var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
-        user.VacancyFilter.IsOnline = true;
+        user.VacancyFilter = new VacancyFilterModel()
+        {
+            Format = JobFormat.Online,
+        };
         await _userService.UpdateUserAsync(user);
 
         await GlobalState(new VacanciesState());

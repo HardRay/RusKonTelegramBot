@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
@@ -34,6 +35,7 @@ public sealed class MainMenuController(
 
         RowButton(SharedResource.AboutCompanyButton, Q(ShowAboutCompany));
         RowButton(SharedResource.VacanciesButton, Q(ShowCities));
+        RowButton(SharedResource.JobForStudentsButton, Q(ShowJobForStudents));
         RowButton(SharedResource.ContactWithHRButton, Q(ContactWithHR));
 
         if (userId == appOptions.Value.AdminTelegramId)
@@ -42,5 +44,18 @@ public sealed class MainMenuController(
         }
 
         await SendMessage();
+    }
+
+    [Action]
+    public async ValueTask ShowJobForStudents()
+    {
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        user.VacancyFilter = new VacancyFilterModel()
+        {
+            ForStudents = true,
+        };
+        await _userService.UpdateUserAsync(user);
+
+        await GlobalState(new VacanciesState());
     }
 }

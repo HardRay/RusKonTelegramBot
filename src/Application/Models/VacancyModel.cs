@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Domain.Enums;
+using MongoDB.Bson;
 
 namespace Application.Models;
 
@@ -25,12 +26,7 @@ public sealed class VacancyModel
     /// <summary>
     /// Формат
     /// </summary>
-    public string? Format { get; set; }
-
-    /// <summary>
-    /// Онлайн
-    /// </summary>
-    public bool IsOnline { get; set; }
+    public JobFormat? Format { get; set; }
 
     /// <summary>
     /// Тип
@@ -48,7 +44,20 @@ public sealed class VacancyModel
     public string? Direction { get; set; }
 
     /// <summary>
+    /// Подходит для студентов
+    /// </summary>
+    public bool ForStudents { get; set; }
+
+    /// <summary>
     /// Дополнительные атрибуты
     /// </summary>
     public IEnumerable<AdditionalAtributeModel> AdditionalAtributes { get; set; } = [];
+
+    public string FormatString => Format switch 
+    { 
+        JobFormat.Offline => "Оффлайн",
+        JobFormat.Online => "Онлайн",
+        JobFormat.Hybrid => "Гибрид",
+        _ => string.Empty
+    };
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Common;
+using Domain.Enums;
 using Domain.Models;
 
 namespace Domain.Entities;
@@ -21,12 +22,7 @@ public sealed class Vacancy : BaseEntity
     /// <summary>
     /// Формат
     /// </summary>
-    public string? Format { get; set; }
-
-    /// <summary>
-    /// Онлайн
-    /// </summary>
-    public bool IsOnline { get; set; }
+    public JobFormat? Format { get; set; }
 
     /// <summary>
     /// Тип
@@ -42,6 +38,11 @@ public sealed class Vacancy : BaseEntity
     /// Направление
     /// </summary>
     public string? Direction { get; set; }
+
+    /// <summary>
+    /// Подходит для студентов
+    /// </summary>
+    public bool ForStudents { get; set; }
 
     /// <summary>
     /// Дополнительные атрибуты
