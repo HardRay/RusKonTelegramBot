@@ -42,8 +42,8 @@ public sealed class CityService(ICityRepository repository, IMapper mapper) : IC
         {
             var city = new City()
             {
-                Name = cells[row, 4].Value.ToString()!,
-                PhotoUrl = cells[row, 5].Value?.ToString()
+                Name = cells[row, 4].Value.ToString()!.Trim(),
+                PhotoUrl = cells[row, 5].Value?.ToString()?.Trim()
             };
 
             cities.Add(city);
