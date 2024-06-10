@@ -37,8 +37,8 @@ public sealed class DirectionController(
         PushL(SharedResource.JobTypeStartMessage);
 
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowDirectionsButton));
-        RowButton(SharedResource.SkipStepButton, Q(ShowVacancies));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(SharedResource.BackButton, Q(ShowJobTypes));
+        Button(SharedResource.SkipStepButton, Q(ShowVacancies));
 
         await SendMessage();
     }

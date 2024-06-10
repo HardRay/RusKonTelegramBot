@@ -46,8 +46,8 @@ public sealed class JobTypeController(
         }
             
 
-        RowButton(SharedResource.SkipStepButton, Q(ShowDirections));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(SharedResource.BackButton, Q(ShowCities));
+        Button(SharedResource.SkipStepButton, Q(ShowDirections));
 
         await SendMessage();
     }

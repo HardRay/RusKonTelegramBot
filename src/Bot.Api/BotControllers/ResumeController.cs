@@ -33,7 +33,6 @@ public class ResumeController(
     {
         PushL(SharedResource.ResumeStartMessage);
         RowButton(SharedResource.BackButton, Q(ShowNotFoundVacancies));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();
     }

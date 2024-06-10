@@ -34,7 +34,7 @@ public sealed class HRController(
 
         RowButton(SharedResource.CallButton, Q(ShowHRPhone));
         RowButton(SharedResource.HRChatButton, appOptions.Value.TelegramHRChat);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
 
         await SendMessage();
     }

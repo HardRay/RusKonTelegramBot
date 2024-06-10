@@ -31,6 +31,7 @@ public sealed class NotFoundVacanciesController(
 
         RowButton(SharedResource.SubscribeToNotificationButton, Q(SubscribeToNotification));
         RowButton(SharedResource.LeaveResumeButton, Q(LeaveResume));
+        RowButton(SharedResource.BackButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();

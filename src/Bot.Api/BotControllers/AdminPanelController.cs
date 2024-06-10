@@ -32,7 +32,7 @@ public sealed class AdminPanelController(
     public async ValueTask ShowAdminPanelMessage()
     {
         PushL(SharedResource.AdminPanelText);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
 
         await SendMessage();
     }

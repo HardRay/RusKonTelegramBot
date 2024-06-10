@@ -99,7 +99,6 @@ public sealed class VacanciesController(
         Button(SharedResource.ApplyVacancyButton, Q(ApplyVacancy, vacancy.Id));
         Button(SharedResource.QuestionButton, appOptions.Value.TelegramHRChat);
         RowButton(SharedResource.BackButton, Q(ShowVacancies));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();
     }

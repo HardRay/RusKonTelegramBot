@@ -37,8 +37,8 @@ public sealed class CityController(
 
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowCitiesButton));
         RowButton(SharedResource.OnlineJobButton, Q(ShowOnlineJobs));
-        RowButton(SharedResource.SkipStepButton, Q(ShowJobTypes));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
+        Button(SharedResource.SkipStepButton, Q(ShowJobTypes));
 
         await SendMessage();
     }

@@ -32,7 +32,7 @@ public sealed class SocialMediaController(
 
         RowButton(SharedResource.TelegramChannelButton, appOptions.Value.TelegramChannelUrl);
         RowButton(SharedResource.VKGroupButton, appOptions.Value.VKGroupUrl);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(SharedResource.BackButton, Q(ShowAboutCompany));
 
         await SendMessage();
     }
