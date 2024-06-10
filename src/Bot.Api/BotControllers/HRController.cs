@@ -42,7 +42,7 @@ public sealed class HRController(
     [Action]
     public async ValueTask ShowHRPhone()
     {
-        var message = await botClient.SendContactAsync(Context.GetSafeChatId()!, appOptions.Value.HRPhone, "HR");
+        var message = await botClient.SendContactAsync(Context.GetSafeChatId()!, appOptions.Value.HRPhone, "РусКон HR");
 
         await _messageService.InsertAsync(message);
     }
