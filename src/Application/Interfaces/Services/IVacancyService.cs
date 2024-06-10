@@ -44,7 +44,7 @@ public interface IVacancyService
     /// Получить список всех городов
     /// </summary>
     /// <returns>Список городов</returns>
-    Task<IEnumerable<string>> GetAllCitiesAsync();
+    Task<IEnumerable<CityModel>> GetAllCitiesAsync();
 
     /// <summary>
     /// Валидация города

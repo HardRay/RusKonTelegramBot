@@ -13,6 +13,7 @@ namespace Application.Serivices;
 public sealed class VacancyService(
     IVacancyRepository repository,
     IUserService userService,
+    ICityService cityService,
     IMapper mapper) : IVacancyService
 {
     /// <inheritdoc/>
@@ -61,18 +62,28 @@ public sealed class VacancyService(
         var vacancies = GetVacanciesFromFileAsync(stream);
 
         await repository.DeleteManyAsync(x => true);
-
         await repository.InsertManyAsync(vacancies);
+
+        await cityService.UploadCitiesAsync(stream);
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<string>> GetAllCitiesAsync()
+    public async Task<IEnumerable<CityModel>> GetAllCitiesAsync()
     {
         var vacancies = await repository.FindManyAsync(x => x.City != null);
 
-        var cities = vacancies.Select(x => x.City!).Distinct();
+        var vacanciesCities = vacancies.Select(x => x.City!).Distinct();
 
-        return cities;
+        var cities = await cityService.GetAllCitiesAsync();
+        var citiesMap = cities.ToDictionary(x => x.Name);
+
+        var result = vacanciesCities.Select(cityName => new CityModel()
+        {
+            Name = cityName,
+            PhotoUrl = citiesMap.TryGetValue(cityName, out var city) ? city.PhotoUrl : null,
+        });
+
+        return result;
     }
 
     /// <inheritdoc/>

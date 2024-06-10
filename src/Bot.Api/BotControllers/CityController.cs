@@ -56,7 +56,7 @@ public sealed class CityController(
 
         var inlineQueryText = Context.Update.InlineQuery?.Query;
         var cities = await vacancyService.GetAllCitiesAsync();
-        var queryResults = InlineHelper.GenerateInlineListAsync(cities, inlineQueryText);
+        var queryResults = InlineHelper.GenerateCitiesInlineListAsync(cities, inlineQueryText);
         await Context.Bot.Client.AnswerInlineQueryAsync(inlineQuery.Id, queryResults, cacheTime: 1);
 
         Context.StopHandling();

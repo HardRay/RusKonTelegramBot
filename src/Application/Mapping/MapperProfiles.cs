@@ -24,5 +24,8 @@ public sealed class MapperProfiles : Profile
 
         CreateMap<Subscription, SubscriptionModel>()
             .ReverseMap();
+
+        CreateMap<City, CityModel>()
+            .ReverseMap();
     }
 }
