@@ -38,7 +38,6 @@ public sealed class DirectionController(
 
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowDirectionsButton));
         RowButton(SharedResource.SkipStepButton, Q(ShowVacancies));
-        RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();

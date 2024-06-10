@@ -35,11 +35,18 @@ public sealed class JobTypeController(
 
         PushL(SharedResource.JobTypeStartMessage);
 
+        int row = 0;
         foreach (var type in types)
-            RowButton(type, Q(ChooseJobType, [type]));
+        {
+            if (row % 2 == 0)
+                RowButton(type, Q(ChooseJobType, [type]));
+            else
+                Button(type, Q(ChooseJobType, [type]));
+            row++;
+        }
+            
 
         RowButton(SharedResource.SkipStepButton, Q(ShowDirections));
-        RowButton(SharedResource.ViewAllVacanciesButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();
