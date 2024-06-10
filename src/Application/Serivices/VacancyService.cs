@@ -40,9 +40,17 @@ public sealed class VacancyService(
     }
 
     /// <inheritdoc/>
-    public async Task<VacancyModel?> GetVacancyById(string id)
+    public async Task<VacancyModel?> GetVacancyByIdAsync(string id)
     {
         var vacancy = await repository.FindFirstOrDefaultAsync(x => x.Id == id);
+
+        return mapper.Map<VacancyModel>(vacancy);
+    }
+
+    /// <inheritdoc/>
+    public async Task<VacancyModel?> GetVacancyByNumberAsync(int number)
+    {
+        var vacancy = await repository.FindFirstOrDefaultAsync(x => x.Number == number);
 
         return mapper.Map<VacancyModel>(vacancy);
     }
@@ -123,6 +131,7 @@ public sealed class VacancyService(
                 Direction = cells[row, 5].Value?.ToString()?.Trim(),
                 Salary = cells[row, 6].Value?.ToString()?.Trim(),
                 ForStudents = cells[row, 7].Value?.ToString()?.Trim() == "Да",
+                Number = row - 1,
                 AdditionalAtributes = additionalAttributes
             });
 

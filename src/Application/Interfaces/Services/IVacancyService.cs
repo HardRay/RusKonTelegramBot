@@ -25,7 +25,14 @@ public interface IVacancyService
     /// </summary>
     /// <param name="id">Идентификатор вакансии</param>
     /// <returns>Вакансия</returns>
-    Task<VacancyModel?> GetVacancyById(string id);
+    Task<VacancyModel?> GetVacancyByIdAsync(string id);
+
+    /// <summary>
+    /// Получить вакансию по номеру
+    /// </summary>
+    /// <param name="number">Номер вакансии</param>
+    /// <returns>Вакансия</returns>
+    Task<VacancyModel?> GetVacancyByNumberAsync(int number);
 
     /// <summary>
     /// Загрузить вакансии из файла

@@ -64,7 +64,7 @@ public sealed class VacanciesController(
             return;
         }
 
-        if (!message.Text.Contains("vacancy"))
+        if (!message.Text.Contains("more"))
             return;
 
         var commandParts = message.Text.Split('_');
@@ -73,21 +73,18 @@ public sealed class VacanciesController(
 
         await _messageService.InsertAsync(message);
 
-        var vacancyId = commandParts.Last();
-        await ShowVacancy(vacancyId);
+        var vacancyNumberStr = commandParts.Last();
+        if (!int.TryParse(vacancyNumberStr, out int vacancyNumber))
+            return;
+
+        await ShowVacancy(vacancyNumber);
 
         Context.StopHandling();
     }
 
-    private async ValueTask ShowVacancy(string? vacancyId)
+    private async ValueTask ShowVacancy(int vacancyNumber)
     {
-        if (vacancyId == null)
-        {
-            await ShowWrongVacancyIdMessage();
-            return;
-        }
-
-        var vacancy = await vacancyService.GetVacancyById(vacancyId);
+        var vacancy = await vacancyService.GetVacancyByNumberAsync(vacancyNumber);
         if (vacancy == null)
         {
             await ShowWrongVacancyIdMessage();
@@ -99,7 +96,7 @@ public sealed class VacanciesController(
         var vacancyDescription = await GetVacancyDescription(vacancy);
         PushLL(vacancyDescription);
 
-        Button(SharedResource.ApplyVacancyButton, Q(ApplyVacancy, vacancyId));
+        Button(SharedResource.ApplyVacancyButton, Q(ApplyVacancy, vacancy.Id));
         Button(SharedResource.QuestionButton, appOptions.Value.TelegramHRChat);
         RowButton(SharedResource.BackButton, Q(ShowVacancies));
         RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
@@ -166,7 +163,7 @@ public sealed class VacanciesController(
             PushL($"<b>{vacancy.Name}</b>");
             if (!string.IsNullOrEmpty(vacancy.Salary))
                 PushL(vacancy.Salary);
-            PushL($"Подробнее: /vacancy_{vacancy.Id}");
+            PushL($"Подробнее: /more_{vacancy.Number}");
 
             PushL();
         }
@@ -181,7 +178,7 @@ public sealed class VacanciesController(
 
     private async ValueTask SendRequestToHr(string vacancyId)
     {
-        var vacancy = await vacancyService.GetVacancyById(vacancyId);
+        var vacancy = await vacancyService.GetVacancyByIdAsync(vacancyId);
         if (vacancy == null)
         {
             await ShowWrongVacancyIdMessage();

@@ -45,6 +45,11 @@ public sealed class Vacancy : BaseEntity
     public bool ForStudents { get; set; }
 
     /// <summary>
+    /// Уникальный номер вакансии для отображения
+    /// </summary>
+    public int Number { get; set; }
+
+    /// <summary>
     /// Дополнительные атрибуты
     /// </summary>
     public IEnumerable<AdditionalAtribute> AdditionalAtributes { get; set; } = [];
