@@ -1,5 +1,4 @@
 ﻿using Application.Models;
-using Domain.Enums;
 
 namespace Application.Interfaces.Services;
 
@@ -25,10 +24,8 @@ public interface IMessageService
     /// <summary>
     /// Создание записи сообщения
     /// </summary>
-    /// <param name="chatId">Идентификатор чата в Telegram</param>
-    /// <param name="messageId">Идентификатор сообщения в Telegram</param>
-    /// <param name="sender">Отправитель</param>
-    Task InsertAsync(long chatId, int messageId, MessageSender sender);
+    /// <param name="message">Сообщение</param>
+    Task InsertAsync(MessageModel message);
 
     /// <summary>
     /// Удаление всех сообщений пользователя

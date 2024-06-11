@@ -96,6 +96,7 @@ ClientBin/
 *~
 *.dbmdl
 *.[Pp]ublish.xml
+*.env
 
 *.publishsettings
 
@@ -134,3 +135,4 @@ _NCrunch*
 
 **/**/.DS_Store
 .idea
+

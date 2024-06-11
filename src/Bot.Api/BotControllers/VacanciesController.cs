@@ -1,10 +1,12 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
+using Domain.Enums;
 using Microsoft.Extensions.Options;
 using System.Text;
 using Telegram.Bot;
@@ -50,7 +52,11 @@ public sealed class VacanciesController(
         RowButton(BotText.NoSuitableVacancyButton, Q(ShowNotFoundVacancies));
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await SendMessage();
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(userTelegramId.Value);
+        if (user.VacancyFilter.Format == JobFormat.Online)
+            await SendMessageWithImage(ImageFiles.OnlineJob);
+        else
+            await SendMessage();
     }
 
     [On(Handle.Unknown)]

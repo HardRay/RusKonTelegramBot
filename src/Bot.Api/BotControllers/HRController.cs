@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
@@ -36,7 +37,7 @@ public sealed class HRController(
         RowButton(BotText.HRChatButton, appOptions.Value.TelegramHRChat);
         RowButton(BotText.BackButton, Q(ShowMainMenu));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.HR);
     }
 
     [Action("ShowHRPhone")]

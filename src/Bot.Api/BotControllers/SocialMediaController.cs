@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
@@ -34,6 +35,6 @@ public sealed class SocialMediaController(
         RowButton(BotText.VKGroupButton, appOptions.Value.VKGroupUrl);
         RowButton(BotText.BackButton, Q(ShowAboutCompany));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.SocialMedia);
     }
 }

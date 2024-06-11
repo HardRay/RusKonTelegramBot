@@ -17,6 +17,15 @@ public interface ITelegramMessageService
     Task UpdateOrSendMessageAsync(long? chatId, string text, IReplyMarkup? replyMarkup);
 
     /// <summary>
+    /// Отправка сообщения c изображением
+    /// </summary>
+    /// <param name="chatId">Идентификатор чата</param>
+    /// <param name="text">Текст сообщения</param>
+    /// <param name="imageFileName">Название файла с изображением</param>
+    /// <param name="replyMarkup">Разметка кнопок</param>
+    Task UpdateOrSendMessageWithImageAsync(long? chatId, string text, string imageFileName, IReplyMarkup? replyMarkup);
+
+    /// <summary>
     /// Создание записи сообщения
     /// </summary>
     /// <param name="message">Сообщение</param>

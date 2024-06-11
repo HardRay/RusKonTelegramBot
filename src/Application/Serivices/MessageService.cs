@@ -29,16 +29,11 @@ public sealed class MessageService(IMessageRepository repository, IMapper mapper
     }
 
     /// <inheritdoc/>
-    public async Task InsertAsync(long chatId, int messageId, MessageSender sender)
+    public async Task InsertAsync(MessageModel message)
     {
-        var message = new Message()
-        {
-            ChatId = chatId,
-            MessageId = messageId,
-            Sender = sender,
-        };
+        var entity = mapper.Map<Message>(message);
 
-        await repository.InsertOneAsync(message);
+        await repository.InsertOneAsync(entity);
     }
 
     /// <inheritdoc/>

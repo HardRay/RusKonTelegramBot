@@ -23,6 +23,11 @@ public sealed class MessageModel
     public MessageSender Sender { get; set; }
 
     /// <summary>
+    /// Содержит изображение
+    /// </summary>
+    public bool HasPhoto { get; set; }
+
+    /// <summary>
     /// Дата создания
     /// </summary>
     public DateTime CreateDateTimeUtc { get; set; }

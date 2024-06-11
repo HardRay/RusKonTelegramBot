@@ -1,9 +1,12 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models;
+using Bot.Api.Helpers;
 using Bot.Api.Services.Interfaces;
 using Domain.Enums;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot.Api.Services;
@@ -22,7 +25,7 @@ public sealed class TelegramMessageService(
 
         var lastMessage = await messageService.GetLastUserMessageAsync(chatId.Value);
 
-        if (lastMessage != null)
+        if (lastMessage != null && !lastMessage.HasPhoto)
         {
             const int maxHoursSinceLastMessage = 48;
             var hoursSinceLastMessage = (DateTime.UtcNow - lastMessage.CreateDateTimeUtc).Hours;
@@ -48,14 +51,65 @@ public sealed class TelegramMessageService(
     }
 
     /// <inheritdoc/>
+    public async Task UpdateOrSendMessageWithImageAsync(long? chatId, string text, string imageFileName, IReplyMarkup? replyMarkup)
+    {
+        if (chatId == null)
+            return;
+
+        var lastMessage = await messageService.GetLastUserMessageAsync(chatId.Value);
+        var imageStream = FileHelper.GetImageAsync(imageFileName);
+
+        if (lastMessage != null && lastMessage.HasPhoto)
+        {
+            const int maxHoursSinceLastMessage = 48;
+            var hoursSinceLastMessage = (DateTime.UtcNow - lastMessage.CreateDateTimeUtc).Hours;
+
+            if (lastMessage.Sender == MessageSender.Bot && hoursSinceLastMessage < maxHoursSinceLastMessage)
+            {
+                try
+                {
+                    var media = new InputMediaPhoto(new InputMedia(imageStream, imageFileName))
+                    {
+                        Caption = text,
+                        ParseMode = ParseMode.Html,
+                    };
+
+                    await client.EditMessageMediaAsync(chatId.Value, lastMessage.MessageId, media, replyMarkup as InlineKeyboardMarkup);
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Ошибка редактирования сообщения");
+                }
+            }
+        }
+
+        var imageFile = new InputOnlineFile(imageStream, imageFileName);
+
+        var message = await client.SendPhotoAsync(chatId, imageFile, text, ParseMode.Html, replyMarkup: replyMarkup);
+
+        await InsertAsync(message);
+    }
+
+    /// <inheritdoc/>
     public async Task InsertAsync(Message? message)
     {
         if (message == null)
             return;
 
         var sender = (message.From?.IsBot ?? false) ? MessageSender.Bot : MessageSender.User;
+        var hasPhoto = message.Photo != null;
 
-        await messageService.InsertAsync(message.Chat.Id, message.MessageId, sender);
+        var model = new MessageModel()
+        {
+            ChatId = message.Chat.Id,
+            MessageId = message.MessageId,
+            Sender = sender,
+            HasPhoto = hasPhoto
+        };
+
+        await messageService.InsertAsync(model);
     }
 
     /// <inheritdoc/>

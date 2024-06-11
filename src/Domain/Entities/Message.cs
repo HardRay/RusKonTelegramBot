@@ -22,4 +22,9 @@ public sealed class Message : BaseEntity
     /// Отправитель
     /// </summary>
     public MessageSender Sender { get; set; }
+
+    /// <summary>
+    /// Содержит изображение
+    /// </summary>
+    public bool HasPhoto { get; set; }
 }

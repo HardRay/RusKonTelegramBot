@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
@@ -33,7 +34,7 @@ public sealed class AboutCompanyController(
         PushL(BotText.AboutCompanyShortText);
         ShowButtons();
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.AboutCompany);
     }
 
     [On(Handle.Unknown)]
@@ -53,7 +54,7 @@ public sealed class AboutCompanyController(
         PushL(BotText.AboutCompanyFullText);
         ShowButtons();
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.AboutCompany);
     }
 
     private void ShowButtons()

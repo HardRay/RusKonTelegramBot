@@ -17,6 +17,13 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         ClearMessage();
     }
 
+    public async Task SendMessageWithImage(string imageFileName)
+    {
+        await _messageService.UpdateOrSendMessageWithImageAsync(Context.GetSafeChatId(), Message.Message, imageFileName, Message.Markup);
+
+        ClearMessage();
+    }
+
     [Action("StartCommand")]
     [Action("/start", "Показать меню")]
     [Filter(Filters.CurrentGlobalState)]

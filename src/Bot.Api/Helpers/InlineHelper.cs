@@ -3,6 +3,9 @@ using Telegram.Bot.Types.InlineQueryResults;
 
 namespace Bot.Api.Helpers;
 
+/// <summary>
+/// Инструменты построения инлайн-ответов
+/// </summary>
 public static class InlineHelper
 {
     public static List<InlineQueryResultArticle> GenerateInlineListAsync(IEnumerable<string> models, string? paramSearch = "")
