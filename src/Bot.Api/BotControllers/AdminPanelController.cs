@@ -31,8 +31,8 @@ public sealed class AdminPanelController(
     [Action]
     public async ValueTask ShowAdminPanelMessage()
     {
-        PushL(SharedResource.AdminPanelText);
-        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
+        PushL(BotText.AdminPanelText);
+        RowButton(BotText.BackButton, Q(ShowMainMenu));
 
         await SendMessage();
     }
@@ -45,7 +45,7 @@ public sealed class AdminPanelController(
         var receivedMessage = Context.Update.Message;
         await _messageService.InsertAsync(receivedMessage);
 
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         var document = receivedMessage?.Document;
         var documentExt = document?.FileName?.Split('.').Last();
@@ -54,7 +54,7 @@ public sealed class AdminPanelController(
 
         if (string.IsNullOrEmpty(documentExt) || !excelExtentions.Contains(documentExt))
         {
-            PushL(SharedResource.InvalidDocumentExtentions);
+            PushL(BotText.InvalidDocumentExtentions);
             await SendMessage();
             return;
         }
@@ -68,16 +68,16 @@ public sealed class AdminPanelController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, SharedResource.ErrorDocumentUploading);
+            logger.LogError(ex, BotText.ErrorDocumentUploading);
 
-            PushL(SharedResource.ErrorDocumentUploading);
+            PushL(BotText.ErrorDocumentUploading);
             await SendMessage();
             return;
         }
 
         await NotifySubscribersAboutNewVacancies();
 
-        PushL(SharedResource.SuccessDocumentUploading);
+        PushL(BotText.SuccessDocumentUploading);
 
         await SendMessage();
     }
@@ -88,12 +88,12 @@ public sealed class AdminPanelController(
 
         foreach(var subscription in subscriptions)
         {
-            var keyboardButton = new InlineKeyboardButton(SharedResource.ShowNewVacanciesButton)
+            var keyboardButton = new InlineKeyboardButton(BotText.ShowNewVacanciesButton)
             {
                 CallbackData = BotConstants.ShowNewVacanciesCallbackData
             };
             var markup = new InlineKeyboardMarkup(keyboardButton);
-            var message = await Client.SendTextMessageAsync(subscription.UserTelegramId, SharedResource.NewVacanciesMessage, replyMarkup: markup);
+            var message = await Client.SendTextMessageAsync(subscription.UserTelegramId, BotText.NewVacanciesMessage, replyMarkup: markup);
 
             await _messageService.InsertAsync(message);
         }

@@ -47,8 +47,8 @@ public sealed class VacanciesController(
 
         ShowVacanciesWithPagination(vacancies, page);
 
-        RowButton(SharedResource.NoSuitableVacancyButton, Q(ShowNotFoundVacancies));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(BotText.NoSuitableVacancyButton, Q(ShowNotFoundVacancies));
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();
     }
@@ -96,17 +96,17 @@ public sealed class VacanciesController(
         var vacancyDescription = await GetVacancyDescription(vacancy);
         PushLL(vacancyDescription);
 
-        Button(SharedResource.ApplyVacancyButton, Q(ApplyVacancy, vacancy.Id));
-        Button(SharedResource.QuestionButton, appOptions.Value.TelegramHRChat);
-        RowButton(SharedResource.BackButton, Q(ShowVacancies));
+        Button(BotText.ApplyVacancyButton, Q(ApplyVacancy, vacancy.Id));
+        Button(BotText.QuestionButton, appOptions.Value.TelegramHRChat);
+        RowButton(BotText.BackButton, Q(ShowVacancies));
 
         await SendMessage();
     }
 
     private async ValueTask ShowWrongVacancyIdMessage()
     {
-        PushL(SharedResource.WrongVacancyId);
-        RowButton(SharedResource.BackButton, Q(ShowVacancies));
+        PushL(BotText.WrongVacancyId);
+        RowButton(BotText.BackButton, Q(ShowVacancies));
         await SendMessage();
     }
 
@@ -136,8 +136,8 @@ public sealed class VacanciesController(
     {
         await SendRequestToHr(vacancyId);
 
-        PushL(SharedResource.SuccessApplyVacancyText);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        PushL(BotText.SuccessApplyVacancyText);
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
         await SendMessage();
     }
 
@@ -203,7 +203,7 @@ public sealed class VacanciesController(
         var userName = $"<a href=\"tg://user?id={chatId}\">{nameBuilder}</a>";
         var vacancyDescription = GetVacancyDescription(vacancy);
 
-        var messageText = string.Format(SharedResource.NewRequestText, userName, vacancyDescription);
+        var messageText = string.Format(BotText.NewRequestText, userName, vacancyDescription);
         await Client.SendTextMessageAsync(appOptions.Value.TelegramHRChatId, messageText, ParseMode.Html);
     }
 }

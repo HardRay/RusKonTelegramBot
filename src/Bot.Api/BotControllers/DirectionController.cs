@@ -34,11 +34,11 @@ public sealed class DirectionController(
     [Action]
     public async ValueTask ShowDirectionChoosingMessage()
     {
-        PushL(SharedResource.JobTypeStartMessage);
+        PushL(BotText.JobTypeStartMessage);
 
-        Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowDirectionsButton));
-        RowButton(SharedResource.BackButton, Q(ShowJobTypes));
-        Button(SharedResource.SkipStepButton, Q(ShowVacancies));
+        Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(BotText.ShowDirectionsButton));
+        RowButton(BotText.BackButton, Q(ShowJobTypes));
+        Button(BotText.SkipStepButton, Q(ShowVacancies));
 
         await SendMessage();
     }
@@ -85,7 +85,7 @@ public sealed class DirectionController(
 
         if (!isValid)
         {
-            PushL(SharedResource.WrongDirectionText);
+            PushL(BotText.WrongDirectionText);
             await SendMessage();
             return;
         }

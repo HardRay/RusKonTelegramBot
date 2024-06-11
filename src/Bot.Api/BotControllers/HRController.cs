@@ -27,19 +27,19 @@ public sealed class HRController(
         await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
-    [Action]
+    [Action("ShowContacts")]
     public async ValueTask ShowContacts()
     {
-        PushL(SharedResource.HRContactsText);
+        PushL(BotText.HRContactsText);
 
-        RowButton(SharedResource.CallButton, Q(ShowHRPhone));
-        RowButton(SharedResource.HRChatButton, appOptions.Value.TelegramHRChat);
-        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
+        RowButton(BotText.CallButton, Q(ShowHRPhone));
+        RowButton(BotText.HRChatButton, appOptions.Value.TelegramHRChat);
+        RowButton(BotText.BackButton, Q(ShowMainMenu));
 
         await SendMessage();
     }
 
-    [Action]
+    [Action("ShowHRPhone")]
     public async ValueTask ShowHRPhone()
     {
         var message = await botClient.SendContactAsync(Context.GetSafeChatId()!, appOptions.Value.HRPhone, "РусКон HR");

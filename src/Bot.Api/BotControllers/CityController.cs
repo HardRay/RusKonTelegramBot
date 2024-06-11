@@ -33,12 +33,12 @@ public sealed class CityController(
     [Action]
     public async ValueTask ShowCityChoosingMessage()
     {
-        PushL(SharedResource.CitiesStartMessage);
+        PushL(BotText.CitiesStartMessage);
 
-        Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(SharedResource.ShowCitiesButton));
-        RowButton(SharedResource.OnlineJobButton, Q(ShowOnlineJobs));
-        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
-        Button(SharedResource.SkipStepButton, Q(ShowJobTypes));
+        Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(BotText.ShowCitiesButton));
+        RowButton(BotText.OnlineJobButton, Q(ShowOnlineJobs));
+        RowButton(BotText.BackButton, Q(ShowMainMenu));
+        Button(BotText.SkipStepButton, Q(ShowJobTypes));
 
         await SendMessage();
     }
@@ -83,7 +83,7 @@ public sealed class CityController(
 
         if (!isValid)
         {
-            PushL(SharedResource.WrongCityText);
+            PushL(BotText.WrongCityText);
             await SendMessage();
             return;
         }

@@ -31,16 +31,16 @@ public sealed class MainMenuController(
     {
         var userId = Context.GetSafeChatId();
 
-        PushL(SharedResource.MainMenuGreetings);
+        PushL(BotText.MainMenuGreetings);
 
-        RowButton(SharedResource.AboutCompanyButton, Q(ShowAboutCompany));
-        RowButton(SharedResource.VacanciesButton, Q(ShowCities));
-        RowButton(SharedResource.JobForStudentsButton, Q(ShowJobForStudents));
-        RowButton(SharedResource.ContactWithHRButton, Q(ContactWithHR));
+        RowButton(BotText.AboutCompanyButton, Q(ShowAboutCompany));
+        RowButton(BotText.VacanciesButton, Q(ShowCities));
+        RowButton(BotText.JobForStudentsButton, Q(ShowJobForStudents));
+        RowButton(BotText.ContactWithHRButton, Q(ContactWithHR));
 
         if (userId == appOptions.Value.AdminTelegramId)
         {
-            RowButton(SharedResource.AdminPanelButton, Q(ShowAdminPanel));
+            RowButton(BotText.AdminPanelButton, Q(ShowAdminPanel));
         }
 
         await SendMessage();

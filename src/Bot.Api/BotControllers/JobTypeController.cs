@@ -33,7 +33,7 @@ public sealed class JobTypeController(
     {
         var types = await GetJobTypes();
 
-        PushL(SharedResource.JobTypeStartMessage);
+        PushL(BotText.JobTypeStartMessage);
 
         int row = 0;
         foreach (var type in types)
@@ -46,8 +46,8 @@ public sealed class JobTypeController(
         }
             
 
-        RowButton(SharedResource.BackButton, Q(ShowCities));
-        Button(SharedResource.SkipStepButton, Q(ShowDirections));
+        RowButton(BotText.BackButton, Q(ShowCities));
+        Button(BotText.SkipStepButton, Q(ShowDirections));
 
         await SendMessage();
     }

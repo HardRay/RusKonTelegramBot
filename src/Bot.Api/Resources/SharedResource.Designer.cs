@@ -420,7 +420,7 @@ namespace Bot.Api.Resources {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Отлично!
-        ///Скоро с тобой свяжется специалист и обсудит детали .
+        ///Скоро с тобой свяжется специалист и обсудит детали.
         /// </summary>
         public static string SuccessApplyVacancyText {
             get {

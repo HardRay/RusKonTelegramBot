@@ -28,11 +28,11 @@ public sealed class SocialMediaController(
     [Action]
     public async ValueTask ShowSocialMediaMessage()
     {
-        PushL(SharedResource.SocialMediaText);
+        PushL(BotText.SocialMediaText);
 
-        RowButton(SharedResource.TelegramChannelButton, appOptions.Value.TelegramChannelUrl);
-        RowButton(SharedResource.VKGroupButton, appOptions.Value.VKGroupUrl);
-        RowButton(SharedResource.BackButton, Q(ShowAboutCompany));
+        RowButton(BotText.TelegramChannelButton, appOptions.Value.TelegramChannelUrl);
+        RowButton(BotText.VKGroupButton, appOptions.Value.VKGroupUrl);
+        RowButton(BotText.BackButton, Q(ShowAboutCompany));
 
         await SendMessage();
     }

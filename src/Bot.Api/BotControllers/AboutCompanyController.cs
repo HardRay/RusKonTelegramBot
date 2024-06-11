@@ -30,7 +30,7 @@ public sealed class AboutCompanyController(
     [Action]
     public async ValueTask ShowAboutCompanyMessage()
     {
-        PushL(SharedResource.AboutCompanyShortText);
+        PushL(BotText.AboutCompanyShortText);
         ShowButtons();
 
         await SendMessage();
@@ -50,7 +50,7 @@ public sealed class AboutCompanyController(
 
         await Client.DeleteMessageAsync(message.Chat.Id, message.MessageId);
 
-        PushL(SharedResource.AboutCompanyFullText);
+        PushL(BotText.AboutCompanyFullText);
         ShowButtons();
 
         await SendMessage();
@@ -58,9 +58,9 @@ public sealed class AboutCompanyController(
 
     private void ShowButtons()
     {
-        RowButton(SharedResource.CompanyVideoButton, appOptions.Value.CompanyVideoUrl);
-        RowButton(SharedResource.CompanyWebsiteButton, appOptions.Value.CompanyWebsiteUrl);
-        RowButton(SharedResource.SocialMediaButton, Q(ShowSocialMedia));
-        RowButton(SharedResource.BackButton, Q(ShowMainMenu));
+        RowButton(BotText.CompanyVideoButton, appOptions.Value.CompanyVideoUrl);
+        RowButton(BotText.CompanyWebsiteButton, appOptions.Value.CompanyWebsiteUrl);
+        RowButton(BotText.SocialMediaButton, Q(ShowSocialMedia));
+        RowButton(BotText.BackButton, Q(ShowMainMenu));
     }
 }

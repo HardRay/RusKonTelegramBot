@@ -31,8 +31,8 @@ public class ResumeController(
     [Action]
     public async ValueTask ShowStartMessage()
     {
-        PushL(SharedResource.ResumeStartMessage);
-        RowButton(SharedResource.BackButton, Q(ShowNotFoundVacancies));
+        PushL(BotText.ResumeStartMessage);
+        RowButton(BotText.BackButton, Q(ShowNotFoundVacancies));
 
         await SendMessage();
     }
@@ -51,8 +51,8 @@ public class ResumeController(
 
         await SendResumeToHr();
 
-        PushL(SharedResource.AcceptedResumeMessage);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        PushL(BotText.AcceptedResumeMessage);
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();
     }
@@ -80,7 +80,7 @@ public class ResumeController(
         }
 
         var userName = $"<a href=\"tg://user?id={chatId}\">{nameBuilder}</a>";
-        var messageText = string.Format(SharedResource.NewResumeText, userName);
+        var messageText = string.Format(BotText.NewResumeText, userName);
         await Client.SendTextMessageAsync(appOptions.Value.TelegramHRChatId, messageText, ParseMode.Html);
 
         await Client.ForwardMessageAsync(appOptions.Value.TelegramHRChatId, chatId, messageId.Value);

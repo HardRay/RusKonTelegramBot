@@ -253,7 +253,7 @@
   </data>
   <data name="SuccessApplyVacancyText" xml:space="preserve">
     <value>Отлично!
-Скоро с тобой свяжется специалист и обсудит детали </value>
+Скоро с тобой свяжется специалист и обсудит детали</value>
   </data>
   <data name="SuccessDocumentUploading" xml:space="preserve">
     <value>Загрузка вакансий из файла и уведомление пользователей прошли успешно!</value>

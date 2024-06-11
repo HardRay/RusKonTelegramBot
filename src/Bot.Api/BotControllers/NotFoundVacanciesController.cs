@@ -27,12 +27,12 @@ public sealed class NotFoundVacanciesController(
     [Action]
     public async ValueTask ShowNotFoundVacanciesMessage()
     {
-        PushL(SharedResource.NotFoundVacanciesButton);
+        PushL(BotText.NotFoundVacanciesButton);
 
-        RowButton(SharedResource.SubscribeToNotificationButton, Q(SubscribeToNotification));
-        RowButton(SharedResource.LeaveResumeButton, Q(LeaveResume));
-        RowButton(SharedResource.BackButton, Q(ShowVacancies));
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(BotText.SubscribeToNotificationButton, Q(SubscribeToNotification));
+        RowButton(BotText.LeaveResumeButton, Q(LeaveResume));
+        RowButton(BotText.BackButton, Q(ShowVacancies));
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessage();
     }
@@ -52,8 +52,8 @@ public sealed class NotFoundVacanciesController(
         };
         await subscriptionService.CreateAsync(subscription);
 
-        PushL(SharedResource.SuccessSubscribtionToNotification);
-        RowButton(SharedResource.BackToMainMenuButton, Q(ShowMainMenu));
+        PushL(BotText.SuccessSubscribtionToNotification);
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
         await SendMessage();
     }
 }
