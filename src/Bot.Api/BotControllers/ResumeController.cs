@@ -34,6 +34,7 @@ public class ResumeController(
     {
         PushL(BotText.ResumeStartMessage);
         RowButton(BotText.BackButton, Q(ShowNotFoundVacancies));
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessageWithImage(ImageFiles.LeaveYourResume);
     }

@@ -149,7 +149,7 @@
 Здесь вы можете обновить информацию о вакансиях. Для этого отправьте мне Excel-файл с вакансиями</value>
   </data>
   <data name="ApplyVacancyButton" xml:space="preserve">
-    <value>Откликнуться на заявку</value>
+    <value>Откликнуться на вакансию</value>
   </data>
   <data name="BackButton" xml:space="preserve">
     <value>Назад</value>
@@ -217,7 +217,7 @@
     <value>Нет подходящей вакансии</value>
   </data>
   <data name="NotFoundVacanciesButton" xml:space="preserve">
-    <value>Не нашлось подходящей вакансии? Давай я уведомлю тебя, когда появятся вакансии по твоим параметрам?
+    <value>Не нашлось подходящей вакансии? Давай я уведомлю тебя, когда список вакансий обновится?
 
 Или можешь оставить своё резюме и наш отдел кадров предложит тебе подходящую вакансию!</value>
   </data>
@@ -259,7 +259,7 @@
     <value>Загрузка вакансий из файла и уведомление пользователей прошли успешно!</value>
   </data>
   <data name="SuccessSubscribtionToNotification" xml:space="preserve">
-    <value>Отлично, тогда будем на связи</value>
+    <value>Отлично, я напишу тебе, когда мы обновим список вакансий!</value>
   </data>
   <data name="TelegramChannelButton" xml:space="preserve">
     <value>Канал в Телеграм</value>

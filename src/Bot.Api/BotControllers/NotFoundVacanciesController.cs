@@ -33,7 +33,6 @@ public sealed class NotFoundVacanciesController(
         RowButton(BotText.SubscribeToNotificationButton, Q(SubscribeToNotification));
         RowButton(BotText.LeaveResumeButton, Q(LeaveResume));
         RowButton(BotText.BackButton, Q(ShowVacancies));
-        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessageWithImage(ImageFiles.NoSuitableVacancy);
     }
@@ -54,6 +53,7 @@ public sealed class NotFoundVacanciesController(
         await subscriptionService.CreateAsync(subscription);
 
         PushL(BotText.SuccessSubscribtionToNotification);
+        RowButton(BotText.BackButton, Q(ShowNotFoundVacancies));
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
         await SendMessageWithImage(ImageFiles.NotificationSubscription);
     }

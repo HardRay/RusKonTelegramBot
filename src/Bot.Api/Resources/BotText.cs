@@ -17,7 +17,7 @@ public static class BotText
 
     public const string AdminPanelText = "<b>Панель администратора</b>\r\n\r\nЗдесь вы можете обновить информацию о вакансиях. Для этого отправьте мне Excel-файл с вакансиями";
 
-    public const string ApplyVacancyButton = "Откликнуться на заявку";
+    public const string ApplyVacancyButton = "Откликнуться на вакансию";
 
     public const string BackButton = "Назад";
 
@@ -59,7 +59,7 @@ public static class BotText
 
     public const string NoSuitableVacancyButton = "Нет подходящей вакансии";
 
-    public const string NotFoundVacanciesButton = "Не нашлось подходящей вакансии? Давай я уведомлю тебя, когда появятся вакансии по твоим параметрам?\r\n\r\nИли можешь оставить своё резюме и наш отдел кадров предложит тебе подходящую вакансию!";
+    public const string NotFoundVacanciesButton = "Не нашлось подходящей вакансии? Давай я уведомлю тебя, когда список вакансий обновится?\r\n\r\nИли можешь оставить своё резюме и наш отдел кадров предложит тебе подходящую вакансию!";
 
     public const string OnlineJobButton = "Работа онлайн";
 
@@ -85,7 +85,7 @@ public static class BotText
 
     public const string SuccessDocumentUploading = "Загрузка вакансий из файла и уведомление пользователей прошли успешно!";
 
-    public const string SuccessSubscribtionToNotification = "Отлично, тогда будем на связи";
+    public const string SuccessSubscribtionToNotification = "Отлично, я напишу тебе, когда мы обновим список вакансий!";
 
     public const string TelegramChannelButton = "Канал в Телеграм";
 

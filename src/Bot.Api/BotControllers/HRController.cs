@@ -35,7 +35,7 @@ public sealed class HRController(
 
         RowButton(BotText.CallButton, Q(ShowHRPhone));
         RowButton(BotText.HRChatButton, appOptions.Value.TelegramHRChat);
-        RowButton(BotText.BackButton, Q(ShowMainMenu));
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         await SendMessageWithImage(ImageFiles.HR);
     }

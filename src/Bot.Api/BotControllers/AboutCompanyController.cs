@@ -62,6 +62,6 @@ public sealed class AboutCompanyController(
         RowButton(BotText.CompanyVideoButton, appOptions.Value.CompanyVideoUrl);
         RowButton(BotText.CompanyWebsiteButton, appOptions.Value.CompanyWebsiteUrl);
         RowButton(BotText.SocialMediaButton, Q(ShowSocialMedia));
-        RowButton(BotText.BackButton, Q(ShowMainMenu));
+        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
     }
 }

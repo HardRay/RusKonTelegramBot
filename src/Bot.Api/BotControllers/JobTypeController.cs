@@ -33,13 +33,14 @@ public sealed class JobTypeController(
     public async ValueTask ShowJobTypeChoosingMessage()
     {
         var types = await GetJobTypes();
+        types = types.OrderBy(t => t.Length);
 
         PushL(BotText.JobTypeStartMessage);
 
         int row = 0;
         foreach (var type in types)
         {
-            if (row % 2 == 0)
+            if (row % 2 == 0 || type.Length > 15)
                 RowButton(type, Q(ChooseJobType, [type]));
             else
                 Button(type, Q(ChooseJobType, [type]));

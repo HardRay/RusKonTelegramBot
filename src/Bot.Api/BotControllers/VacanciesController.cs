@@ -106,8 +106,8 @@ public sealed class VacanciesController(
         var vacancyDescription = await GetVacancyDescription(vacancy);
         PushLL(vacancyDescription);
 
-        Button(BotText.ApplyVacancyButton, Q(ApplyVacancy, vacancy.Id));
-        Button(BotText.QuestionButton, appOptions.Value.TelegramHRChat);
+        RowButton(BotText.ApplyVacancyButton, Q(ApplyVacancy, vacancy.Id));
+        RowButton(BotText.QuestionButton, appOptions.Value.TelegramHRChat);
         RowButton(BotText.BackButton, Q(ShowVacancies));
 
         await SendMessage();
