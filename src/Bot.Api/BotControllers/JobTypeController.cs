@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -49,7 +50,7 @@ public sealed class JobTypeController(
         RowButton(BotText.BackButton, Q(ShowCities));
         Button(BotText.SkipStepButton, Q(ShowDirections));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.SelectJobType);
     }
 
     [Action]

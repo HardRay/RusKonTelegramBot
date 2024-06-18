@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
@@ -43,7 +44,7 @@ public sealed class MainMenuController(
             RowButton(BotText.AdminPanelButton, Q(ShowAdminPanel));
         }
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.MainMenu);
     }
 
     [Action]

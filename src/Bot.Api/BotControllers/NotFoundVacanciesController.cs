@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
@@ -34,7 +35,7 @@ public sealed class NotFoundVacanciesController(
         RowButton(BotText.BackButton, Q(ShowVacancies));
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.NoSuitableVacancy);
     }
 
     [Action]
@@ -54,6 +55,6 @@ public sealed class NotFoundVacanciesController(
 
         PushL(BotText.SuccessSubscribtionToNotification);
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.NotificationSubscription);
     }
 }

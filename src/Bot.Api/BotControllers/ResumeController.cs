@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
@@ -34,7 +35,7 @@ public class ResumeController(
         PushL(BotText.ResumeStartMessage);
         RowButton(BotText.BackButton, Q(ShowNotFoundVacancies));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.LeaveYourResume);
     }
 
     [On(Handle.Unknown)]
@@ -54,7 +55,7 @@ public class ResumeController(
         PushL(BotText.AcceptedResumeMessage);
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.ReplyLeaveYourResume);
     }
 
     private async ValueTask SendResumeToHr()

@@ -53,10 +53,14 @@ public sealed class VacanciesController(
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
 
         var user = await _userService.GetOrCreateUserByTelegramIdAsync(userTelegramId.Value);
+
+        var imageFileName = ImageFiles.VacanciesList;
         if (user.VacancyFilter.Format == JobFormat.Online)
-            await SendMessageWithImage(ImageFiles.OnlineJob);
-        else
-            await SendMessage();
+            imageFileName = ImageFiles.OnlineJob;
+        if (user.VacancyFilter.ForStudents)
+            imageFileName = ImageFiles.StudentsJob;
+
+        await SendMessageWithImage(imageFileName);
     }
 
     [On(Handle.Unknown)]
@@ -144,7 +148,7 @@ public sealed class VacanciesController(
 
         PushL(BotText.SuccessApplyVacancyText);
         RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.ApplyForJob);
     }
 
     [Action]

@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services;
 using Application.Models;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Helpers;
 using Bot.Api.Resources;
@@ -40,7 +41,7 @@ public sealed class CityController(
         RowButton(BotText.BackButton, Q(ShowMainMenu));
         Button(BotText.SkipStepButton, Q(ShowJobTypes));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.SelectCity);
     }
 
     [On(Handle.Unknown)]
