@@ -1,11 +1,11 @@
 ﻿using Application.Interfaces.Services;
-using Application.Models;
 using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Options;
 using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
+using Domain.Enums;
 using Microsoft.Extensions.Options;
 
 namespace Bot.Api.BotControllers;
@@ -32,6 +32,8 @@ public sealed class MainMenuController(
     {
         var userId = Context.GetSafeChatId();
 
+        await ShowKeyboard();
+
         PushL(BotText.MainMenuGreetings);
 
         RowButton(BotText.AboutCompanyButton, Q(ShowAboutCompany));
@@ -47,16 +49,19 @@ public sealed class MainMenuController(
         await SendMessageWithImage(ImageFiles.MainMenu);
     }
 
-    [Action]
-    public async ValueTask ShowJobForStudents()
+    private async Task ShowKeyboard()
     {
-        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
-        user.VacancyFilter = new VacancyFilterModel()
-        {
-            ForStudents = true,
-        };
-        await _userService.UpdateUserAsync(user);
+        PushL(BotText.MainMenuKeyboardMessage);
 
-        await GlobalState(new VacanciesState());
+        RowKButton(Q(ShowAboutCompanyByKeyboard));
+        RowKButton(Q(ShowCitiesByKeyboard));
+        RowKButton(Q(ShowJobForStudentsByKeyboard));
+        RowKButton(Q(ContactWithHRByKeyboard));
+
+        var message = await Send();
+
+        await _messageService.InsertAsync(message, MessageMarkupType.Keyboard);
+
+        await _messageService.DeleteAllUserMessagesWithKeyboardExceptLastAsync(Context.GetSafeChatId());
     }
 }

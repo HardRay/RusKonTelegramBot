@@ -51,6 +51,8 @@ public static class BotText
 
     public const string MainMenuGreetings = "Привет, я бот для поиска работы в группе компаний «РусКон», я могу рассказать тебе о компании и её направлениях, показать актуальные вакансии и помочь связаться с нашим отделом кадров.\r\n\r\nПомоги мне понять, что ты хочешь, нажав на кнопку ниже";
 
+    public const string MainMenuKeyboardMessage = "Сейчас ты в главном меню, выбирай куда дальше";
+
     public const string NewRequestText = "{0} оставил(а) заявку на вакансию:\r\n{1}";
 
     public const string NewResumeText = "{0} оставил(а) своё резюме";

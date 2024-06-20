@@ -1,7 +1,10 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models;
 using Bot.Api.Constants;
+using Bot.Api.Resources;
 using Bot.Api.Services.Interfaces;
 using Deployf.Botf;
+using Telegram.Bot;
 
 namespace Bot.Api.BotControllers.Common;
 
@@ -27,7 +30,7 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
     [Action("StartCommand")]
     [Action("/start", "Показать меню")]
     [Filter(Filters.CurrentGlobalState)]
-    public async Task Start()
+    public async Task StartCommand()
     {
         var receivedMessage = Context.Update.Message;
         await _messageService.InsertAsync(receivedMessage);
@@ -57,10 +60,10 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         await ShowSocialMedia();
     }
 
-    [Action("ContactsComman")]
+    [Action("ContactsCommand")]
     [Action("/contacts", "Контакты")]
     [Filter(Filters.CurrentGlobalState)]
-    public async Task ContactsComman()
+    public async Task ContactsCommand()
     {
         var receivedMessage = Context.Update.Message;
         await _messageService.InsertAsync(receivedMessage);
@@ -117,13 +120,13 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         await GlobalState(new MainMenuState());
     }
 
-    [Action("AboutCompany")]
+    [Action("ShowAboutCompany")]
     protected async ValueTask ShowAboutCompany()
     {
         await GlobalState(new AboutCompanyState());
     }
 
-    [Action("Cities")]
+    [Action("ShowCities")]
     protected async ValueTask ShowCities()
     {
         await GlobalState(new CityState());
@@ -169,6 +172,62 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
     protected async ValueTask LeaveResume()
     {
         await GlobalState(new ResumeState());
+    }
+
+    [Action("ShowJobForStudents")]
+    public async ValueTask ShowJobForStudents()
+    {
+        var user = await _userService.GetOrCreateUserByTelegramIdAsync(Context.GetSafeChatId()!.Value);
+        user.VacancyFilter = new VacancyFilterModel()
+        {
+            ForStudents = true,
+        };
+        await _userService.UpdateUserAsync(user);
+
+        await GlobalState(new VacanciesState());
+    }
+
+    [Action(BotText.AboutCompanyButton)]
+    protected async ValueTask ShowAboutCompanyByKeyboard()
+    {
+        await DeleteMessageByKeyboardAsync();
+
+        await ShowAboutCompany();
+    }
+
+    [Action(BotText.VacanciesButton)]
+    protected async ValueTask ShowCitiesByKeyboard()
+    {
+        await DeleteMessageByKeyboardAsync();
+
+        await ShowCities();
+    }
+
+    [Action(BotText.ContactWithHRButton)]
+    protected async ValueTask ContactWithHRByKeyboard()
+    {
+        await DeleteMessageByKeyboardAsync();
+
+        await ContactWithHR();
+    }
+
+    [Action(BotText.JobForStudentsButton)]
+    public async ValueTask ShowJobForStudentsByKeyboard()
+    {
+        await DeleteMessageByKeyboardAsync();
+
+        await ShowJobForStudents();
+    }
+
+    private async Task DeleteMessageByKeyboardAsync()
+    {
+        var chatId = Context.GetSafeChatId();
+        var messageId = Context.Update.Message?.MessageId;
+
+        if (chatId == null || messageId == null)
+            return;
+
+        await Client.DeleteMessageAsync(chatId, messageId.Value);
     }
 
     protected async Task ClearVacancyFilter()

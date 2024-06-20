@@ -51,7 +51,7 @@ public sealed class TelegramMessageService(
     }
 
     /// <inheritdoc/>
-    public async Task UpdateOrSendMessageWithImageAsync(long? chatId, string text, string imageFileName, IReplyMarkup? replyMarkup)
+    public async Task UpdateOrSendMessageWithImageAsync(long? chatId, string text, string imageFileName, IReplyMarkup? replyMarkup, bool eternalMessage = false)
     {
         if (chatId == null)
             return;
@@ -59,7 +59,7 @@ public sealed class TelegramMessageService(
         var lastMessage = await messageService.GetLastUserMessageAsync(chatId.Value);
         var imageStream = FileHelper.GetImageAsync(imageFileName);
 
-        if (lastMessage != null && lastMessage.HasPhoto)
+        if (!eternalMessage && lastMessage != null && lastMessage.HasPhoto)
         {
             const int maxHoursSinceLastMessage = 48;
             var hoursSinceLastMessage = (DateTime.UtcNow - lastMessage.CreateDateTimeUtc).Hours;
@@ -89,11 +89,12 @@ public sealed class TelegramMessageService(
 
         var message = await client.SendPhotoAsync(chatId, imageFile, text, ParseMode.Html, replyMarkup: replyMarkup);
 
-        await InsertAsync(message);
+        if (!eternalMessage)
+            await InsertAsync(message);
     }
 
     /// <inheritdoc/>
-    public async Task InsertAsync(Message? message)
+    public async Task InsertAsync(Message? message, MessageMarkupType markupType = MessageMarkupType.Inline)
     {
         if (message == null)
             return;
@@ -106,7 +107,8 @@ public sealed class TelegramMessageService(
             ChatId = message.Chat.Id,
             MessageId = message.MessageId,
             Sender = sender,
-            HasPhoto = hasPhoto
+            HasPhoto = hasPhoto,
+            MarkupType = markupType
         };
 
         await messageService.InsertAsync(model);
@@ -121,10 +123,36 @@ public sealed class TelegramMessageService(
         var messages = await messageService.GetAllUserMessagesAsync(chatId.Value);
         if (!messages.Any())
             return;
+        messages = messages
+            .Where(x => x.MarkupType == MessageMarkupType.Inline)
+            .OrderBy(x => x.CreateDateTimeUtc);
+        int allButLastCount = messages.Count() - 1;
+        messages = messages.Take(allButLastCount);
+
+        await DeleteMessagesAsync(messages);
+    }
+
+    /// <inheritdoc/>
+    public async Task DeleteAllUserMessagesWithKeyboardExceptLastAsync(long? chatId)
+    {
+        if (chatId == null)
+            return;
+
+        var messages = await messageService.GetAllUserMessagesAsync(chatId.Value);
+        messages = messages.Where(x=>x.MarkupType == MessageMarkupType.Keyboard);
+
+        if (!messages.Any())
+            return;
+
         messages = messages.OrderBy(x => x.CreateDateTimeUtc);
         int allButLastCount = messages.Count() - 1;
         messages = messages.Take(allButLastCount);
 
+        await DeleteMessagesAsync(messages);
+    }
+
+    private async Task DeleteMessagesAsync(IEnumerable<MessageModel> messages)
+    {
         foreach (var message in messages)
         {
             try
