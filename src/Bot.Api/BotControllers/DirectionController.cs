@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Helpers;
 using Bot.Api.Resources;
@@ -40,7 +41,7 @@ public sealed class DirectionController(
         RowButton(BotText.BackButton, Q(ShowJobTypes));
         Button(BotText.SkipStepButton, Q(ShowVacancies));
 
-        await SendMessage();
+        await SendMessageWithImage(ImageFiles.SelectDirection);
     }
 
     [On(Handle.Unknown)]

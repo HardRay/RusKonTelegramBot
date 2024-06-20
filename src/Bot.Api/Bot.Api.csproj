@@ -68,6 +68,9 @@
     <None Update="Images\select_city.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Images\select_direction.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Images\select_job_type.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
