@@ -47,6 +47,8 @@ public sealed class MainMenuController(
         }
 
         await SendMessageWithImage(ImageFiles.MainMenu);
+
+        await _messageService.DeleteAllUserMessagesExceptLastAsync(Context.GetSafeChatId());
     }
 
     private async Task ShowKeyboard()
