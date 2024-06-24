@@ -23,12 +23,9 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - dbdata:/data/db
+      - ./data/mongodb/db:/data/db
     networks:
       - bot-network
-
-volumes:
-  dbdata:
 
 networks:
   bot-network:
