@@ -35,7 +35,7 @@ public sealed class DirectionController(
     [Action]
     public async ValueTask ShowDirectionChoosingMessage()
     {
-        PushL(BotText.JobTypeStartMessage);
+        PushL(BotText.DirectionStartMessage);
 
         Button(InlineKeyboardButton.WithSwitchInlineQueryCurrentChat(BotText.ShowDirectionsButton));
         RowButton(BotText.BackButton, Q(ShowJobTypes));

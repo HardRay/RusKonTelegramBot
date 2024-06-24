@@ -14,19 +14,12 @@ services:
     environment:
     - BotUserName=${BotUserName}
     - BotApiToken=${BotApiToken}
-    networks:
-      - bot-network
 
   mongodb:
     image: mongo:latest
     container_name: mongodb
-    ports:
-      - 27017:27017
     volumes:
-      - ./data/mongodb/db:/data/db
-    networks:
-      - bot-network
+      - mongodb-data:/data/db
 
-networks:
-  bot-network:
-    driver: bridge
+volumes:
+  mongodb-data:
