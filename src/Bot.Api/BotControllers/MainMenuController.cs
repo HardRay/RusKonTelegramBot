@@ -56,9 +56,9 @@ public sealed class MainMenuController(
         PushL(BotText.MainMenuKeyboardMessage);
 
         RowKButton(Q(ShowAboutCompanyByKeyboard));
-        RowKButton(Q(ShowCitiesByKeyboard));
+        KButton(Q(ShowCitiesByKeyboard));
         RowKButton(Q(ShowJobForStudentsByKeyboard));
-        RowKButton(Q(ContactWithHRByKeyboard));
+        KButton(Q(ContactWithHRByKeyboard));
 
         var message = await Send();
 

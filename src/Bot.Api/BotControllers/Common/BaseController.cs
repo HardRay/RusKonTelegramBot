@@ -187,7 +187,7 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         await GlobalState(new VacanciesState());
     }
 
-    [Action(BotText.AboutCompanyButton)]
+    [Action(BotText.AboutCompanyKeyboardButton)]
     protected async ValueTask ShowAboutCompanyByKeyboard()
     {
         await DeleteMessageByKeyboardAsync();
@@ -195,7 +195,7 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         await ShowAboutCompany();
     }
 
-    [Action(BotText.VacanciesButton)]
+    [Action(BotText.VacanciesKeyboardButton)]
     protected async ValueTask ShowCitiesByKeyboard()
     {
         await DeleteMessageByKeyboardAsync();
@@ -203,7 +203,7 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         await ShowCities();
     }
 
-    [Action(BotText.ContactWithHRButton)]
+    [Action(BotText.ContactWithHRKeyboardButton)]
     protected async ValueTask ContactWithHRByKeyboard()
     {
         await DeleteMessageByKeyboardAsync();
@@ -211,7 +211,7 @@ public class BaseController<TState>(ITelegramMessageService messageService, IUse
         await ContactWithHR();
     }
 
-    [Action(BotText.JobForStudentsButton)]
+    [Action(BotText.JobForStudentsKeyboardButton)]
     public async ValueTask ShowJobForStudentsByKeyboard()
     {
         await DeleteMessageByKeyboardAsync();

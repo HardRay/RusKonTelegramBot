@@ -6,6 +6,7 @@
 public static class BotText
 {
     public const string AboutCompanyButton = "О компании";
+    public const string AboutCompanyKeyboardButton = "О компании";
 
     public const string AboutCompanyFullText = "<b>Группа компаний «РусКон»</b> – многопрофильная организация, работающая с 2007 года. Мы представлены в 9-ти городах России с центральным офисом в Саратове. В портфель группы входят различные направления деятельности: \r\n\r\n<b>Оптовая и розничная торговля:</b> Поставка и реализация продукции для корпоративных и частных клиентов. Возможности для специалистов по продажам, закупкам, логистике и маркетингу.\r\n\r\n<b>Производство стальных изделий:</b> Создание высококачественной продукции с применением передовых технологий. Вакансии для инженеров, металлургов, специалистов по производству и контролю качества.\r\n\r\n<b>IT-разработка:</b> Разработка программных решений для автоматизации бизнес-процессов. Вакансии для программистов 1С, разработчиков Битрикс24, аналитиков, проектных менеджеров, тестировщиков и других специалистов.\r\n\r\nПрисоединившись к <b>ГК «РусКон»</b>, вы сможете реализовать свой потенциал и внести вклад в успех компании.";
 
@@ -32,6 +33,7 @@ public static class BotText
     public const string CompanyWebsiteButton = "Сайт";
 
     public const string ContactWithHRButton = "Связь с отделом кадров";
+    public const string ContactWithHRKeyboardButton = "Отдел кадров";
 
     public const string DirectionStartMessage = "<b>Отлично!</b> Теперь выбери направление, которое тебе нравится или посмотри все вакансии по выбранным параметрам";
 
@@ -44,6 +46,7 @@ public static class BotText
     public const string InvalidDocumentExtentions = "Неверное расширение файла. Должен быть xlsx или xls";
 
     public const string JobForStudentsButton = "Работа для студентов";
+    public const string JobForStudentsKeyboardButton = "Для студентов";
 
     public const string JobTypeStartMessage = "Хорошо, разобрались с городом и форматом работы, теперь подскажи, где ты хочешь работать?";
 
@@ -92,6 +95,7 @@ public static class BotText
     public const string TelegramChannelButton = "Канал в Телеграм";
 
     public const string VacanciesButton = "Вакансии";
+    public const string VacanciesKeyboardButton = "Вакансии";
 
     public const string ViewAllVacanciesButton = "Посмотреть все вакансии";
 
