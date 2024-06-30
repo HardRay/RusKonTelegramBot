@@ -50,7 +50,7 @@ public sealed class VacanciesController(
         ShowVacanciesWithPagination(vacancies, page);
 
         RowButton(BotText.NoSuitableVacancyButton, Q(ShowNotFoundVacancies));
-        RowButton(BotText.BackToMainMenuButton, Q(ShowMainMenu));
+        RowButton(BotText.BackButton, Q(ShowCities));
 
         var user = await _userService.GetOrCreateUserByTelegramIdAsync(userTelegramId.Value);
 
