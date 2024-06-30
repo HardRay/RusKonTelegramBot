@@ -63,4 +63,37 @@ public static class InlineHelper
 
         return result;
     }
+
+    public static List<InlineQueryResultArticle> GenerateDirectionsInlineListAsync(IEnumerable<DirectionModel> models, string? paramSearch = "")
+    {
+        if (string.IsNullOrEmpty(paramSearch))
+        {
+            return models
+              .Select(r => new InlineQueryResultArticle(r.Name, r.Name, new InputTextMessageContent(r.Name))
+              {
+                  ThumbHeight = 320,
+                  ThumbWidth = 10,
+                  ThumbUrl = r.PhotoUrl
+              })
+              .Take(10)
+              .ToList();
+        }
+
+        var result = models
+          .Where(c => c.Name.Contains(paramSearch, StringComparison.OrdinalIgnoreCase))
+          .Select(r => new InlineQueryResultArticle(r.Name, r.Name, new InputTextMessageContent(r.Name))
+          {
+              ThumbHeight = 320,
+              ThumbWidth = 10,
+              ThumbUrl = r.PhotoUrl
+          })
+          .ToList();
+
+        if (result.Count > 50)
+        {
+            return result.Take(10).ToList();
+        }
+
+        return result;
+    }
 }

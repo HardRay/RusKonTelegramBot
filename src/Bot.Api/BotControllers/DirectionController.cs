@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Models;
 using Application.Models.Constansts;
 using Bot.Api.BotControllers.Common;
 using Bot.Api.Helpers;
@@ -59,7 +60,7 @@ public sealed class DirectionController(
         var directions = await GetDirections(userTelegramId);
 
         var inlineQueryText = Context.Update.InlineQuery?.Query;
-        var queryResults = InlineHelper.GenerateInlineListAsync(directions, inlineQueryText);
+        var queryResults = InlineHelper.GenerateDirectionsInlineListAsync(directions, inlineQueryText);
         await Context.Bot.Client.AnswerInlineQueryAsync(inlineQuery.Id, queryResults, cacheTime: 1);
 
         Context.StopHandling();
@@ -110,14 +111,8 @@ public sealed class DirectionController(
         return directions.Count() > 1;
     }
 
-    private async Task<IEnumerable<string>> GetDirections(long userTelegramId)
+    private async Task<IEnumerable<DirectionModel>> GetDirections(long userTelegramId)
     {
-        var vacancies = await vacancyService.GetFilterdVacanciesAsync(userTelegramId);
-        var directions = vacancies
-            .Where(x => !string.IsNullOrEmpty(x.Direction))
-            .Select(x => x.Direction!)
-            .Distinct();
-
-        return directions;
+        return await vacancyService.GetFilteredDirectionsAsync(userTelegramId);
     }
 }

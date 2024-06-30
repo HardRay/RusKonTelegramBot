@@ -47,6 +47,13 @@ public interface IVacancyService
     Task<IEnumerable<CityModel>> GetAllCitiesAsync();
 
     /// <summary>
+    /// Получить список всех направлений
+    /// </summary>
+    /// <param name="userTelegramId">Идентификатор пользователя в Telegram</param>
+    /// <returns>Список направлений</returns>
+    Task<IEnumerable<DirectionModel>> GetFilteredDirectionsAsync(long userTelegramId);
+
+    /// <summary>
     /// Валидация города
     /// </summary>
     Task<bool> ValidateCityAsync(string city);

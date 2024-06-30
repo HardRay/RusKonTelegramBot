@@ -14,6 +14,7 @@ public sealed class VacancyService(
     IVacancyRepository repository,
     IUserService userService,
     ICityService cityService,
+    IDirectionService directionService,
     IMapper mapper) : IVacancyService
 {
     /// <inheritdoc/>
@@ -65,6 +66,7 @@ public sealed class VacancyService(
         await repository.InsertManyAsync(vacancies);
 
         await cityService.UploadCitiesAsync(stream);
+        await directionService.UploadDirectionsAsync(stream);
     }
 
     /// <inheritdoc/>
@@ -81,6 +83,27 @@ public sealed class VacancyService(
         {
             Name = cityName,
             PhotoUrl = citiesMap.TryGetValue(cityName, out var city) ? city.PhotoUrl : null,
+        });
+
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<DirectionModel>> GetFilteredDirectionsAsync(long userTelegramId)
+    {
+        var vacancies = await GetFilterdVacanciesAsync(userTelegramId);
+        var vacanciesDirections = vacancies
+            .Where(x => !string.IsNullOrEmpty(x.Direction))
+            .Select(x => x.Direction!)
+            .Distinct();
+
+        var directions = await directionService.GetAllDirectionsAsync();
+        var directionsMap = directions.ToDictionary(x => x.Name);
+
+        var result = vacanciesDirections.Select(directionName => new DirectionModel()
+        {
+            Name = directionName,
+            PhotoUrl = directionsMap.TryGetValue(directionName, out var direction) ? direction.PhotoUrl : null,
         });
 
         return result;

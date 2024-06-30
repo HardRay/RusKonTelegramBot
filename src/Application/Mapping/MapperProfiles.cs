@@ -27,5 +27,8 @@ public sealed class MapperProfiles : Profile
 
         CreateMap<City, CityModel>()
             .ReverseMap();
+
+        CreateMap<Direction, DirectionModel>()
+            .ReverseMap();
     }
 }
