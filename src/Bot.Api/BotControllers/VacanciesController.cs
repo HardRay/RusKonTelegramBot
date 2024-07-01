@@ -171,9 +171,9 @@ public sealed class VacanciesController(
         {
             PushL($"<b>{vacancy.Name}</b>");
             if (!string.IsNullOrEmpty(vacancy.Salary))
-                PushL(vacancy.Salary);
+                PushL($"💵 {vacancy.Salary}");
             if (!string.IsNullOrEmpty(vacancy.City))
-                PushL(vacancy.City);
+                PushL($"📍 {vacancy.City}");
             PushL($"Подробнее: /more_{vacancy.Number}");
 
             PushL();

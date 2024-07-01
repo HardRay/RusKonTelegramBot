@@ -32,7 +32,7 @@ public static class BotText
 
     public const string CompanyWebsiteButton = "Сайт";
 
-    public const string ContactWithHRButton = "Связь с отделом кадров";
+    public const string ContactWithHRButton = "Отдел кадров";
     public const string ContactWithHRKeyboardButton = "Отдел кадров";
 
     public const string DirectionStartMessage = "<b>Отлично!</b> Теперь выбери направление, которое тебе нравится или посмотри все вакансии по выбранным параметрам";
@@ -45,7 +45,7 @@ public static class BotText
 
     public const string InvalidDocumentExtentions = "Неверное расширение файла. Должен быть xlsx или xls";
 
-    public const string JobForStudentsButton = "Работа для студентов";
+    public const string JobForStudentsButton = "Для студентов";
     public const string JobForStudentsKeyboardButton = "Для студентов";
 
     public const string JobTypeStartMessage = "Хорошо, разобрались с городом и форматом работы, теперь подскажи, где ты хочешь работать?";

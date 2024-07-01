@@ -37,9 +37,9 @@ public sealed class MainMenuController(
         PushL(BotText.MainMenuGreetings);
 
         RowButton(BotText.AboutCompanyButton, Q(ShowAboutCompany));
-        RowButton(BotText.VacanciesButton, Q(ShowCities));
+        Button(BotText.VacanciesButton, Q(ShowCities));
         RowButton(BotText.JobForStudentsButton, Q(ShowJobForStudents));
-        RowButton(BotText.ContactWithHRButton, Q(ContactWithHR));
+        Button(BotText.ContactWithHRButton, Q(ContactWithHR));
 
         if (userId == appOptions.Value.AdminTelegramId)
         {
