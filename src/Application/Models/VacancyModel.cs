@@ -49,6 +49,11 @@ public sealed class VacancyModel
     public bool ForStudents { get; set; }
 
     /// <summary>
+    /// Адрес
+    /// </summary>
+    public string? Address { get; set; }
+
+    /// <summary>
     /// Уникальный номер вакансии для отображения
     /// </summary>
     public int Number { get; set; }

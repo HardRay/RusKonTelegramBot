@@ -136,7 +136,7 @@ public sealed class VacancyService(
         while (cells[row, 1].Value != null)
         {
             var additionalAttributes = new List<AdditionalAtribute>();
-            const int additionalAttributesStartColumn = 8;
+            const int additionalAttributesStartColumn = 9;
             var attributeColumn = additionalAttributesStartColumn;
             var attributeName = cells[1, attributeColumn]?.Value?.ToString()?.Trim();
 
@@ -165,6 +165,7 @@ public sealed class VacancyService(
                 Direction = cells[row, 5].Value?.ToString()?.Trim(),
                 Salary = cells[row, 6].Value?.ToString()?.Trim(),
                 ForStudents = cells[row, 7].Value?.ToString()?.Trim() == "Да",
+                Address = cells[row, 8].Value?.ToString()?.Trim(),
                 Number = row - 1,
                 AdditionalAtributes = additionalAttributes
             });
